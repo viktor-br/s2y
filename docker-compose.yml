@@ -1,0 +1,58 @@
+version: '3.7'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: send2yourself-nginx
+    tty: true
+    volumes:
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    ports:
+      - "80:80"
+    links:
+      - client
+      - server
+
+  server:
+    image: node:10.15-slim
+    container_name: send2yourself-server
+    tty: true
+    volumes:
+      - ./server:/var/www
+    working_dir: /var/www
+    entrypoint: node_modules/.bin/nodemon ./src/server.js --exec babel-node -e js
+#    ports:
+#      - "4004:4000"
+    links:
+      - redis
+      - db
+    env_file:
+      - ./server/.env
+
+  client:
+    image: node:10.15-slim
+    container_name: send2yourself-client
+    tty: true
+    volumes:
+      - ./client:/var/www
+    working_dir: /var/www
+    entrypoint: node_modules/.bin/react-scripts start
+#    ports:
+#      - "3003:3000"
+    links:
+      - server
+      - redis
+
+  redis:
+    image: redis
+    container_name: send2yourself-redis
+    tty: true
+
+  db:
+    image: mariadb:10.3
+    container_name: send2yourself-db
+    tty: true
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - 33306:3306
