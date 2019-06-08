@@ -39,7 +39,7 @@ const receiveMessage = gql`
     receiveMessage {
       uuid
       content
-      created_at
+      createdAt
     }
   }
 `;
@@ -57,7 +57,7 @@ const getMessages = gql`
     getMessages {
       uuid
       content
-      created_at
+      createdAt
     }
   }
 `;

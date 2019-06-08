@@ -4,7 +4,7 @@ const message = gql`
   type Message {
     uuid: String!
     content: String!
-    created_at: String!
+    createdAt: String!
   }
 `;
 

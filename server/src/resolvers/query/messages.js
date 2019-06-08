@@ -20,7 +20,7 @@ const sendMessage = async (root, { content }, { user, pubsub, messageRepository 
   const message = {
     uuid: uuidv4(),
     userUUID,
-    created_at: new Date(Date.now()),
+    createdAt: new Date(Date.now()),
     content,
   };
   pubsub.publish('messages', { receiveMessage: message });

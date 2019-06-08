@@ -9,7 +9,14 @@ class AccountRepository extends Repository {
     );
 
     if (rows.length > 0) {
-      return rows[0];
+      const { uuid, name } = rows[0];
+
+      return {
+        uuid,
+        authProvider,
+        externalId,
+        name,
+      };
     }
 
     return null;
@@ -22,7 +29,7 @@ class AccountRepository extends Repository {
       name,
     },
   ) {
-    // TODO updaet name if needed
+    // TODO update name if needed
     let account = await this.findByAuthProviderAndExternalId(authProvider, externalId);
 
     if (account) {
@@ -30,7 +37,7 @@ class AccountRepository extends Repository {
     }
 
     account = {
-      id: uuidv4(),
+      uuid: uuidv4(),
       auth_provider: authProvider,
       external_id: externalId,
       name,

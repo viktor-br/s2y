@@ -11,4 +11,7 @@ module.exports = {
       statements: -10,
     },
   },
+  transform: {
+    '^.+\\.js$': 'esm',
+  },
 };
