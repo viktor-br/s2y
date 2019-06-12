@@ -1,7 +1,7 @@
-import query from './query';
-import mutation from './mutation';
-import subscription from './subscription';
-import message from './types/message';
+const query = require('./query');
+const mutation = require('./mutation');
+const subscription = require('./subscription');
+const message = require('./types/message');
 
 const typeDefs = [
   query,
@@ -10,4 +10,4 @@ const typeDefs = [
   message,
 ];
 
-export default typeDefs;
+module.exports = typeDefs;

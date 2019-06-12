@@ -4,4 +4,4 @@ class Repository {
   }
 }
 
-export default Repository;
+module.exports = Repository;

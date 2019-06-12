@@ -1,5 +1,5 @@
-import cookie from 'cookie';
-import authenticateUser from './authentication';
+const cookie = require('cookie');
+const { authenticateUser } = require('./authentication');
 
 const createSubscriptionOnConnectHandler = contextData => async (connectionParams, webSocket) => {
   const { SID: sessionId } = cookie.parse(webSocket.upgradeReq.headers.cookie);
@@ -12,4 +12,6 @@ const createSubscriptionOnConnectHandler = contextData => async (connectionParam
   };
 };
 
-export default createSubscriptionOnConnectHandler;
+module.exports = {
+  createSubscriptionOnConnectHandler,
+};

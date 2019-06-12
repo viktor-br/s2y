@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server';
+const { gql } = require('apollo-server');
 
 const subscription = gql`
   type Subscription {
@@ -6,4 +6,4 @@ const subscription = gql`
   }
 `;
 
-export default subscription;
+module.exports = subscription;

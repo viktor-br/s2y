@@ -1,4 +1,4 @@
-import { withFilter } from 'apollo-server';
+const { withFilter } = require('apollo-server');
 
 const receiveMessage = {
   subscribe: withFilter(
@@ -7,4 +7,4 @@ const receiveMessage = {
   ),
 };
 
-export default receiveMessage;
+module.exports = receiveMessage;

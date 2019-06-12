@@ -1,6 +1,6 @@
-import { MessageRepository, AccountRepository } from './repositories';
+const { MessageRepository, AccountRepository } = require('./repositories');
 
-export {
+module.exports = {
   MessageRepository,
   AccountRepository,
 };

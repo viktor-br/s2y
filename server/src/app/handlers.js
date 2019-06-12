@@ -8,7 +8,7 @@ const createLoginHandler = (session, accountRepository) => async (req, res) => {
     const name = (token === '123') ? 'Viktor Brusylovets' : 'John Dow';
     const authProvider = 'google';
 
-    const { id: userUUID } = await accountRepository.createOrGetExisting({
+    const { uuid: userUUID } = await accountRepository.createOrGetExisting({
       externalId,
       name,
       authProvider,
@@ -29,4 +29,6 @@ const createLoginHandler = (session, accountRepository) => async (req, res) => {
   }
 };
 
-export default createLoginHandler;
+module.exports = {
+  createLoginHandler,
+};

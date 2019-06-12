@@ -1,4 +1,4 @@
-import mysql from 'mysql2';
+const mysql = require('mysql2');
 
 const createPersistentStoragePool = config => mysql.createPool({
   host: config.get('db.host'),
@@ -9,4 +9,6 @@ const createPersistentStoragePool = config => mysql.createPool({
   connectionLimit: 10,
 }).promise();
 
-export default createPersistentStoragePool;
+module.exports = {
+  createPersistentStoragePool,
+};

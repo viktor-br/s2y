@@ -1,9 +1,9 @@
-import Repository from './repository';
+const Repository = require('./repository');
 
 class MessageRepository extends Repository {
   async findByUserUUID(userUUID) {
     const [messages] = await this.pool.query(
-      'SELECT * FROM `message` WHERE user_uuid = ? ORDER BY `created_at` ASC LIMIT 10',
+      'SELECT * FROM `message` WHERE user_uuid = ? ORDER BY `created_at` ASC LIMIT 20',
       [userUUID],
     );
 
@@ -41,4 +41,4 @@ class MessageRepository extends Repository {
   }
 }
 
-export default MessageRepository;
+module.exports = MessageRepository;

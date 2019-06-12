@@ -14,13 +14,13 @@ services:
       - server
 
   server:
-    image: node:10.15-slim
+    image: node:10-slim
     container_name: send2yourself-server
     tty: true
     volumes:
       - ./server:/var/www
     working_dir: /var/www
-    entrypoint: node_modules/.bin/nodemon -r esm ./src/server.js
+    entrypoint: node_modules/.bin/nodemon ./src/server.js
 #    ports:
 #      - "4004:4000"
     links:
@@ -30,7 +30,7 @@ services:
       - ./server/.env
 
   client:
-    image: node:10.15-slim
+    image: node:10-slim
     container_name: send2yourself-client
     tty: true
     volumes:

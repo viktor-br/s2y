@@ -1,12 +1,8 @@
-import authenticateUser from './authentication';
+const { authenticateUser } = require('./authentication');
 
 const createContext = contextData => async ({ req, connection }) => {
   if (connection) {
     return connection.context;
-  }
-
-  if (!req) {
-    throw new Error('Authentication failed');
   }
 
   const { cookies: { SID: sessionId } } = req;
@@ -19,4 +15,6 @@ const createContext = contextData => async ({ req, connection }) => {
   };
 };
 
-export default createContext;
+module.exports = {
+  createContext,
+};

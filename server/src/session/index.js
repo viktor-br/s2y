@@ -1,5 +1,4 @@
-import uuidv4 from 'uuid/v4';
-
+const uuidv4 = require('uuid/v4');
 
 class Session {
   constructor(storage) {
@@ -8,6 +7,7 @@ class Session {
 
   async createForUser(userUUID) {
     const newSessionId = uuidv4();
+
     await this.storage.set(`session_${newSessionId}`, userUUID);
 
     return newSessionId;
@@ -30,4 +30,4 @@ class Session {
   }
 }
 
-export default Session;
+module.exports = Session;

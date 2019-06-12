@@ -1,5 +1,5 @@
-import uuidv4 from 'uuid/v4';
-import Repository from './repository';
+const uuidv4 = require('uuid/v4');
+const Repository = require( './repository');
 
 class AccountRepository extends Repository {
   async findByAuthProviderAndExternalId(authProvider, externalId) {
@@ -52,4 +52,4 @@ class AccountRepository extends Repository {
   }
 }
 
-export default AccountRepository;
+module.exports = AccountRepository;

@@ -1,5 +1,5 @@
-import redis from 'redis';
-import bluebird from 'bluebird';
+const redis = require('redis');
+const bluebird = require('bluebird');
 
 bluebird.promisifyAll(redis);
 
@@ -14,4 +14,6 @@ const createSessionStorage = (logger, config) => {
   return redisClient;
 };
 
-export default createSessionStorage;
+module.exports = {
+  createSessionStorage,
+};

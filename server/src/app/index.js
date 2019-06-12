@@ -1,10 +1,10 @@
-import createSessionStorage from './session-storage';
-import createPersistentStoragePool from './persistent-storage';
-import createContext from './context';
-import createLoginHandler from './handlers';
-import createSubscriptionOnConnectHandler from './subscriptions';
+const { createSessionStorage } = require('./session-storage');
+const { createPersistentStoragePool } = require('./persistent-storage');
+const { createContext } = require('./context');
+const { createLoginHandler } = require('./handlers');
+const { createSubscriptionOnConnectHandler } = require('./subscriptions');
 
-export {
+module.exports = {
   createSessionStorage,
   createPersistentStoragePool,
   createContext,

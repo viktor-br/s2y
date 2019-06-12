@@ -1,22 +1,22 @@
-import { createLogger, format, transports } from 'winston';
-import { ApolloServer } from 'apollo-server-express';
-import { PubSub } from 'graphql-subscriptions';
-import express from 'express';
-import cookieParser from 'cookie-parser';
-import http from 'http';
-import cors from 'cors';
-import { MessageRepository, AccountRepository } from './data-sources';
-import createResolvers from './resolvers';
-import typeDefs from './type-defs';
-import config from './config';
-import Session from './session';
-import {
+const { createLogger, format, transports } = require('winston');
+const { ApolloServer } = require('apollo-server-express');
+const { PubSub } = require('graphql-subscriptions');
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const http = require('http');
+const cors = require('cors');
+const { MessageRepository, AccountRepository } = require('./data-sources');
+const createResolvers = require('./resolvers');
+const typeDefs = require('./type-defs');
+const config = require('./config');
+const Session = require('./session');
+const {
   createSessionStorage,
   createPersistentStoragePool,
   createContext,
   createLoginHandler,
   createSubscriptionOnConnectHandler,
-} from './app';
+} = require('./app');
 
 const pubsub = new PubSub();
 

@@ -1,5 +1,6 @@
-import { getMessages, sendMessage } from './query/messages';
-import receiveMessage from './subscription/message';
+const getMessages = require('./query/messages');
+const sendMessage = require('./mutation/messages');
+const receiveMessage = require('./subscription/message');
 
 const createResolvers = () => ({
   Query: {
@@ -13,4 +14,4 @@ const createResolvers = () => ({
   },
 });
 
-export default createResolvers;
+module.exports = createResolvers;

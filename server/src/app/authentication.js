@@ -14,4 +14,6 @@ const authenticateUser = async (sessionId, contextData) => {
   return { uuid: userUUID };
 };
 
-export default authenticateUser;
+module.exports = {
+  authenticateUser,
+};

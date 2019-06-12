@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server';
+const { gql } = require( 'apollo-server');
 
 const message = gql`
   type Message {
@@ -8,4 +8,4 @@ const message = gql`
   }
 `;
 
-export default message;
+module.exports = message;

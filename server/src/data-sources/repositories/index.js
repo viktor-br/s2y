@@ -1,7 +1,7 @@
-import MessageRepository from './message';
-import AccountRepository from './account';
+const MessageRepository = require('./message');
+const AccountRepository = require('./account');
 
-export {
+module.exports = {
   MessageRepository,
   AccountRepository,
 };
