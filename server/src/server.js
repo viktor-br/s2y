@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const http = require('http');
 const cors = require('cors');
 const { MessageRepository, AccountRepository } = require('./data-sources');
-const createResolvers = require('./resolvers');
+const resolvers = require('./resolvers');
 const typeDefs = require('./type-defs');
 const config = require('./config');
 const Session = require('./session');
@@ -17,7 +17,7 @@ const {
   createLoginHandler,
   createSubscriptionOnConnectHandler,
 } = require('./app');
-
+const getCurrentDate = () => new Date(Date.now());
 const pubsub = new PubSub();
 
 const logger = createLogger({
@@ -41,7 +41,6 @@ const session = new Session(createSessionStorage(logger, config));
 const pool = createPersistentStoragePool(config);
 const messageRepository = new MessageRepository(pool);
 const accountRepository = new AccountRepository(pool);
-const resolvers = createResolvers();
 
 const contextData = {
   logger,
@@ -49,6 +48,7 @@ const contextData = {
   messageRepository,
   accountRepository,
   session,
+  getCurrentDate,
 };
 
 const context = createContext(contextData);

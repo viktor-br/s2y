@@ -7,7 +7,9 @@ const createContext = contextData => async ({ req, connection }) => {
 
   const { cookies: { SID: sessionId } } = req;
 
-  const user = await authenticateUser(sessionId, contextData);
+  const { session } = contextData;
+
+  const user = await authenticateUser(sessionId, session);
 
   return {
     ...contextData,

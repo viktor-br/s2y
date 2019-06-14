@@ -14,15 +14,7 @@ class Session {
   }
 
   async remove(sessionId) {
-    const key = `session_${sessionId}`;
-    await this.storage.del(
-      key,
-      (error) => {
-        if (error) {
-          throw error;
-        }
-      },
-    );
+    this.storage.del(`session_${sessionId}`);
   }
 
   async get(sessionId) {

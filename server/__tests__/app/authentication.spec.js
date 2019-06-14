@@ -1,17 +1,15 @@
-const { authenticateUser } = require('../../src/app/authentication');
+const { authenticateUser } = require('../../src/app');
 
 describe('authenticateUser', () => {
   test('success', async () => {
     expect.assertions(1);
 
     const userUUID = 'abc';
-    const contextData = {
-      session: {
-        get: jest.fn(() => userUUID),
-      },
+    const session = {
+      get: jest.fn(() => userUUID),
     };
 
-    const user = await authenticateUser('123', contextData);
+    const user = await authenticateUser('123', session);
 
     expect(user).toEqual({ uuid: userUUID });
   });
@@ -24,12 +22,10 @@ describe('authenticateUser', () => {
   test('failed: wrong sessionId', async () => {
     expect.assertions(1);
 
-    const contextData = {
-      session: {
-        get: jest.fn(() => null),
-      },
+    const session = {
+      get: jest.fn(() => null),
     };
 
-    await expect(authenticateUser('123', contextData)).rejects.toEqual(new Error('Authentication failed'));
+    await expect(authenticateUser('123', session)).rejects.toEqual(new Error('Authentication failed'));
   });
 });

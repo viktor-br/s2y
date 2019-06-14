@@ -3,6 +3,7 @@ const { createPersistentStoragePool } = require('./persistent-storage');
 const { createContext } = require('./context');
 const { createLoginHandler } = require('./handlers');
 const { createSubscriptionOnConnectHandler } = require('./subscriptions');
+const { authenticateUser } = require('./authentication');
 
 module.exports = {
   createSessionStorage,
@@ -10,4 +11,5 @@ module.exports = {
   createContext,
   createLoginHandler,
   createSubscriptionOnConnectHandler,
+  authenticateUser,
 };

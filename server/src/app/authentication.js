@@ -1,9 +1,7 @@
-const authenticateUser = async (sessionId, contextData) => {
+const authenticateUser = async (sessionId, session) => {
   if (!sessionId) {
     throw new Error('Authentication failed');
   }
-
-  const { session } = contextData;
 
   const userUUID = await session.get(sessionId);
 

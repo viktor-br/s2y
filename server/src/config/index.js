@@ -5,7 +5,7 @@ const config = convict({
     host: {
       format: String,
       env: 'S2Y_DB_HOST',
-      default: '',
+      default: 'localhost',
     },
     port: {
       format: String,

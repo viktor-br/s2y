@@ -5,7 +5,7 @@ const createLoginHandler = (session, accountRepository) => async (req, res) => {
     // TODO fetch from google auth
 
     const externalId = (token === '123') ? 123456789 : 555555555;
-    const name = (token === '123') ? 'Viktor Brusylovets' : 'John Dow';
+    const name = (token === '123') ? 'Jane Dow' : 'John Dow';
     const authProvider = 'google';
 
     const { uuid: userUUID } = await accountRepository.createOrGetExisting({

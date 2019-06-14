@@ -1,6 +1,6 @@
 const uuidv4 = require('uuid/v4');
 
-const sendMessage = async (root, { content }, { user, pubsub, messageRepository }) => {
+const sendMessage = async (root, { content }, { user, pubsub, messageRepository, getCurrentDate }) => {
   if (!user) {
     return null;
   }
@@ -10,7 +10,7 @@ const sendMessage = async (root, { content }, { user, pubsub, messageRepository 
   const message = {
     uuid: uuidv4(),
     userUUID,
-    createdAt: new Date(Date.now()),
+    createdAt: getCurrentDate(),
     content,
   };
   pubsub.publish('messages', { receiveMessage: message });

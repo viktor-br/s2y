@@ -1,5 +1,5 @@
 const uuidv4 = require('uuid/v4');
-const Repository = require( './repository');
+const Repository = require('./repository');
 
 class AccountRepository extends Repository {
   async findByAuthProviderAndExternalId(authProvider, externalId) {
@@ -8,18 +8,22 @@ class AccountRepository extends Repository {
       [authProvider, externalId],
     );
 
-    if (rows.length > 0) {
-      const { uuid, name } = rows[0];
-
-      return {
-        uuid,
-        authProvider,
-        externalId,
-        name,
-      };
+    if (!rows) {
+      return null;
     }
 
-    return null;
+    if (rows.length === 0) {
+      return null;
+    }
+
+    const { uuid, name } = rows[0];
+
+    return {
+      uuid,
+      authProvider,
+      externalId,
+      name,
+    };
   }
 
   async createOrGetExisting(
@@ -30,25 +34,30 @@ class AccountRepository extends Repository {
     },
   ) {
     // TODO update name if needed
-    let account = await this.findByAuthProviderAndExternalId(authProvider, externalId);
+    const account = await this.findByAuthProviderAndExternalId(authProvider, externalId);
 
     if (account) {
       return account;
     }
 
-    account = {
-      uuid: uuidv4(),
-      auth_provider: authProvider,
-      external_id: externalId,
-      name,
-    };
+    const uuid = uuidv4();
 
     await this.pool.query(
       'INSERT INTO `account` SET ?',
-      account,
+      {
+        uuid,
+        auth_provider: authProvider,
+        external_id: externalId,
+        name,
+      },
     );
 
-    return account;
+    return {
+      uuid,
+      authProvider,
+      externalId,
+      name,
+    };
   }
 }
 

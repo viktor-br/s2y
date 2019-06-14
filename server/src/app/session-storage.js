@@ -3,17 +3,21 @@ const bluebird = require('bluebird');
 
 bluebird.promisifyAll(redis);
 
+const createRedisOnConnectHandler = (logger, { host, port }) => () => logger.info(`Redis client connected to ${host}:${port}`);
+const createRedisOnErrorHandler = logger => err => logger.error(`Redis error: ${err}`);
+
 const createSessionStorage = (logger, config) => {
-  const redisClient = redis.createClient(
-    config.get('session.storage.port'),
-    config.get('session.storage.host'),
-  );
-  redisClient.on('connect', () => logger.info('Redis client connected'));
-  redisClient.on('error', err => logger.error(`Redis error: ${err}`));
+  const host = config.get('session.storage.host');
+  const port = config.get('session.storage.port');
+  const redisClient = redis.createClient(port, host);
+  redisClient.on('connect', createRedisOnConnectHandler(logger, { host, port }));
+  redisClient.on('error', createRedisOnErrorHandler(logger));
 
   return redisClient;
 };
 
 module.exports = {
   createSessionStorage,
+  createRedisOnConnectHandler,
+  createRedisOnErrorHandler,
 };

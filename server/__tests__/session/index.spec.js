@@ -1,5 +1,4 @@
 const uuidv4 = require('uuid/v4');
-
 const Session = require('../../src/session');
 
 jest.mock('uuid/v4');
@@ -31,5 +30,34 @@ describe('session', () => {
     expect(storageSetMock).toHaveBeenCalledWith(`session_${sessionId}`, userUUID);
 
     expect(returnedSsessionId).toEqual(sessionId);
+  });
+
+  test('session get', async () => {
+    const sessionId = '12345';
+    const userUUID = '55555';
+    const storageSetMock = jest.fn(() => userUUID);
+
+    const storage = {
+      getAsync: storageSetMock,
+    };
+    const session = new Session(storage);
+    const returnedUserUUID = await session.get(sessionId);
+
+    expect(storageSetMock).toHaveBeenCalledWith(`session_${sessionId}`);
+
+    expect(returnedUserUUID).toBe(userUUID);
+  });
+
+  test('session del', () => {
+    const sessionId = '12345';
+    const storageSetMock = jest.fn();
+
+    const storage = {
+      del: storageSetMock,
+    };
+    const session = new Session(storage);
+    session.remove(sessionId);
+
+    expect(storageSetMock).toHaveBeenCalledWith(`session_${sessionId}`);
   });
 });

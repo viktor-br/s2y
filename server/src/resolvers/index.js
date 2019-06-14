@@ -2,7 +2,7 @@ const getMessages = require('./query/messages');
 const sendMessage = require('./mutation/messages');
 const receiveMessage = require('./subscription/message');
 
-const createResolvers = () => ({
+module.exports = {
   Query: {
     getMessages,
   },
@@ -12,6 +12,4 @@ const createResolvers = () => ({
   Subscription: {
     receiveMessage,
   },
-});
-
-module.exports = createResolvers;
+};
