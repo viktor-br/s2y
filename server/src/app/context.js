@@ -1,4 +1,4 @@
-const { authenticateUser } = require('./authentication');
+const authenticateUser = require('./authenticate-user');
 
 const createContext = contextData => async ({ req, connection }) => {
   if (connection) {

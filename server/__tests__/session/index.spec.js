@@ -18,16 +18,20 @@ describe('session', () => {
     const sessionId = '12345';
     const userUUID = '55555';
     const storageSetMock = jest.fn();
+    const storageExpireAtMock = jest.fn();
 
     uuidv4.mockReturnValueOnce(sessionId);
 
     const storage = {
       set: storageSetMock,
+      expireat: storageExpireAtMock,
     };
     const session = new Session(storage);
-    const returnedSsessionId = await session.createForUser(userUUID);
+    const expirationDate = (new Date(Date.now()) / 1000) + 86400;
+    const returnedSsessionId = await session.createForUser(userUUID, expirationDate);
 
     expect(storageSetMock).toHaveBeenCalledWith(`session_${sessionId}`, userUUID);
+    expect(storageExpireAtMock).toHaveBeenCalledWith(`session_${sessionId}`, expirationDate);
 
     expect(returnedSsessionId).toEqual(sessionId);
   });

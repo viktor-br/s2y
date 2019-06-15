@@ -5,6 +5,9 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const http = require('http');
 const cors = require('cors');
+const bodyParser = require('body-parser');
+const { OAuth2Client } = require('google-auth-library');
+const { GoogleSignInClient } = require('./authentication');
 const { MessageRepository, AccountRepository } = require('./data-sources');
 const resolvers = require('./resolvers');
 const typeDefs = require('./type-defs');
@@ -14,9 +17,11 @@ const {
   createSessionStorage,
   createPersistentStoragePool,
   createContext,
-  createLoginHandler,
+  createAuthHandler,
+  createLogoutHandler,
   createSubscriptionOnConnectHandler,
 } = require('./app');
+
 const getCurrentDate = () => new Date(Date.now());
 const pubsub = new PubSub();
 
@@ -41,6 +46,9 @@ const session = new Session(createSessionStorage(logger, config));
 const pool = createPersistentStoragePool(config);
 const messageRepository = new MessageRepository(pool);
 const accountRepository = new AccountRepository(pool);
+const googleSignInClientId = config.get('google.sign_in.client_id');
+const oAuth2Client = new OAuth2Client(googleSignInClientId);
+const googleSignInClient = new GoogleSignInClient(oAuth2Client, googleSignInClientId);
 
 const contextData = {
   logger,
@@ -49,6 +57,7 @@ const contextData = {
   accountRepository,
   session,
   getCurrentDate,
+  googleSignInClient,
 };
 
 const context = createContext(contextData);
@@ -56,6 +65,7 @@ const context = createContext(contextData);
 const app = express();
 app.use(cookieParser());
 app.use(cors());
+app.use(bodyParser.json());
 
 const server = new ApolloServer({
   typeDefs,
@@ -76,7 +86,8 @@ server.applyMiddleware({ app });
 const httpServer = http.createServer(app);
 server.installSubscriptionHandlers(httpServer);
 
-app.get('/login', createLoginHandler(session, accountRepository));
+app.post('/auth', createAuthHandler(contextData));
+app.post('/logout', createLogoutHandler(contextData));
 
 httpServer.listen({ port: 4000 }, () => (
   logger.info('🚀 Server ready')

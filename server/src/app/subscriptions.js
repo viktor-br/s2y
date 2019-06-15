@@ -1,5 +1,5 @@
 const cookie = require('cookie');
-const { authenticateUser } = require('./authentication');
+const authenticateUser = require('./authenticate-user');
 
 const createSubscriptionOnConnectHandler = contextData => async (connectionParams, webSocket) => {
   const { SID: sessionId } = cookie.parse(webSocket.upgradeReq.headers.cookie);

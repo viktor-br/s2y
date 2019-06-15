@@ -42,6 +42,8 @@ services:
     links:
       - server
       - redis
+    env_file:
+      - ./client/.env
 
   redis:
     image: redis

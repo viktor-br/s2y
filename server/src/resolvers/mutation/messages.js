@@ -1,6 +1,15 @@
 const uuidv4 = require('uuid/v4');
 
-const sendMessage = async (root, { content }, { user, pubsub, messageRepository, getCurrentDate }) => {
+const sendMessage = async (
+  root,
+  { content },
+  {
+    user,
+    pubsub,
+    messageRepository,
+    getCurrentDate,
+  },
+) => {
   if (!user) {
     return null;
   }

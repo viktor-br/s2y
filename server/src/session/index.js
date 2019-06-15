@@ -5,10 +5,13 @@ class Session {
     this.storage = storage;
   }
 
-  async createForUser(userUUID) {
+  async createForUser(userUUID, expirationDate) {
     const newSessionId = uuidv4();
 
-    await this.storage.set(`session_${newSessionId}`, userUUID);
+    const sessionKey = `session_${newSessionId}`;
+
+    await this.storage.set(sessionKey, userUUID);
+    await this.storage.expireat(sessionKey, expirationDate);
 
     return newSessionId;
   }

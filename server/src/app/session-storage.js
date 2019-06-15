@@ -3,7 +3,10 @@ const bluebird = require('bluebird');
 
 bluebird.promisifyAll(redis);
 
-const createRedisOnConnectHandler = (logger, { host, port }) => () => logger.info(`Redis client connected to ${host}:${port}`);
+const createRedisOnConnectHandler = (
+  logger,
+  { host, port },
+) => () => logger.info(`Redis client connected to ${host}:${port}`);
 const createRedisOnErrorHandler = logger => err => logger.error(`Redis error: ${err}`);
 
 const createSessionStorage = (logger, config) => {

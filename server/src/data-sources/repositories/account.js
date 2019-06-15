@@ -16,13 +16,20 @@ class AccountRepository extends Repository {
       return null;
     }
 
-    const { uuid, name } = rows[0];
+    const {
+      uuid,
+      name,
+      picture,
+      created_at: createdAt,
+    } = rows[0];
 
     return {
       uuid,
       authProvider,
       externalId,
       name,
+      picture,
+      createdAt,
     };
   }
 
@@ -31,6 +38,8 @@ class AccountRepository extends Repository {
       authProvider,
       externalId,
       name,
+      picture,
+      createdAt,
     },
   ) {
     // TODO update name if needed
@@ -49,6 +58,8 @@ class AccountRepository extends Repository {
         auth_provider: authProvider,
         external_id: externalId,
         name,
+        picture,
+        created_at: createdAt,
       },
     );
 
@@ -57,6 +68,8 @@ class AccountRepository extends Repository {
       authProvider,
       externalId,
       name,
+      picture,
+      createdAt,
     };
   }
 }

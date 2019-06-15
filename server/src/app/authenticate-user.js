@@ -12,6 +12,4 @@ const authenticateUser = async (sessionId, session) => {
   return { uuid: userUUID };
 };
 
-module.exports = {
-  authenticateUser,
-};
+module.exports = authenticateUser;

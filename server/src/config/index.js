@@ -42,6 +42,15 @@ const config = convict({
       },
     },
   },
+  google: {
+    sign_in: {
+      client_id: {
+        format: String,
+        env: 'S2Y_GOOGLE_SIGNIN_CLIENT_ID',
+        default: '',
+      },
+    },
+  },
 });
 
 config.validate({ allowed: 'strict' });

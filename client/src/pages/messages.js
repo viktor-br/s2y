@@ -10,14 +10,14 @@ import {InMemoryCache} from "apollo-cache-inmemory";
 import gql from "graphql-tag";
 
 const wsLink = new WebSocketLink({
-  uri: 'ws://send2yourself.com/ws/',//process.env.REACT_SEND2YOURSELF_WS_URI,
+  uri: process.env.REACT_APP_SEND2YOURSELF_WS_URI,
   options: {
     reconnect: true
   }
 });
 
 const httpLink = new HttpLink({
-  uri: 'http://send2yourself.com/graphql/',//process.env.REACT_SEND2YOURSELF_URI,
+  uri: process.env.REACT_APP_SEND2YOURSELF_URI,
 });
 
 const link = split(

@@ -1,4 +1,8 @@
-const { createSessionStorage, createRedisOnConnectHandler, createRedisOnErrorHandler } = require('../../src/app/session-storage');
+const {
+  createSessionStorage,
+  createRedisOnConnectHandler,
+  createRedisOnErrorHandler,
+} = require('../../src/app/session-storage');
 
 describe('createSessionStorage', () => {
   test('redis client creation', async () => {
@@ -19,7 +23,10 @@ describe('createSessionStorage', () => {
     const logger = {
       info: loggerInfoMock,
     };
-    const createRedisOnConnectHandlerFunc = createRedisOnConnectHandler(logger, { host: 'localhost', port: 1234 });
+    const createRedisOnConnectHandlerFunc = createRedisOnConnectHandler(
+      logger,
+      { host: 'localhost', port: 1234 },
+    );
     createRedisOnConnectHandlerFunc();
     expect(loggerInfoMock).toHaveBeenCalled();
   });

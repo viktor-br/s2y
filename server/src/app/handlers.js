@@ -1,34 +1,91 @@
-const createLoginHandler = (session, accountRepository) => async (req, res) => {
-  const { query: { token } } = req;
+const createAuthHandler = (
+  {
+    logger,
+    session,
+    accountRepository,
+    googleSignInClient,
+    getCurrentDate,
+  },
+) => async (req, res) => {
+  logger.info('Authentication: started');
+  const { body: { token } } = req;
 
-  if (token) {
-    // TODO fetch from google auth
+  if (!token) {
+    logger.info('Authentication: request with empty token');
+    res.status(401);
+    res.send('');
+    return;
+  }
 
-    const externalId = (token === '123') ? 123456789 : 555555555;
-    const name = (token === '123') ? 'Jane Dow' : 'John Dow';
-    const authProvider = 'google';
-
-    const { uuid: userUUID } = await accountRepository.createOrGetExisting({
-      externalId,
-      name,
-      authProvider,
+  let failed = false;
+  const payload = await googleSignInClient
+    .verifyAndGetUserInfo(token)
+    .catch((err) => {
+      // TODO error contains user details if token is outdated.
+      logger.info(err);
+      failed = true;
     });
 
-    // remove current session if exists
-    const { cookies: { SID: sessionId } } = req;
-    if (sessionId) {
-      await session.remove(sessionId);
-    }
-
-    const newSessionId = await session.createForUser(userUUID);
-
-    res.cookie('SID', newSessionId);
-    res.redirect('/messages');
-  } else {
-    res.send('Wrong token');
+  if (failed) {
+    logger.info('Authentication failed. Return 401 error');
+    res.status(401);
+    res.send('');
+    return;
   }
+
+  const {
+    sub: externalId,
+    name,
+    picture,
+  } = payload;
+
+  logger.info('Authentication: %s authenticated', externalId);
+
+  const authProvider = 'google';
+
+  const { uuid: userUUID } = await accountRepository.createOrGetExisting({
+    externalId,
+    name,
+    authProvider,
+    picture,
+    createdAt: getCurrentDate(),
+  });
+
+  // remove current session if exists
+  const { cookies: { SID: sessionId } } = req;
+  if (sessionId) {
+    await session.remove(sessionId);
+    logger.info('Authentication: old session removed.');
+  }
+
+  const expirationDate = (getCurrentDate() / 1000) + 86400;
+  const newSessionId = await session.createForUser(userUUID, expirationDate);
+
+  res.cookie('SID', newSessionId, { maxAge: 86400000, sameSite: true, httpOnly: true });
+  res.status(204);
+  res.send('');
+  logger.info('Authentication: completed');
+};
+
+const createLogoutHandler = (
+  {
+    logger,
+    session,
+  },
+) => async (req, res) => {
+  logger.info('Logout: started');
+  const { cookies: { SID: sessionId } } = req;
+  if (sessionId) {
+    await session.remove(sessionId);
+    logger.info('Logout: session removed.');
+  }
+
+  res.clearCookie('SID');
+  res.send('');
+  logger.info('Logout: completed');
 };
 
 module.exports = {
-  createLoginHandler,
+  createAuthHandler,
+  createLogoutHandler,
 };

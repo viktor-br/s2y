@@ -1,4 +1,3 @@
-const uuidv4 = require('uuid/v4');
 const { MessageRepository } = require('../../../src/data-sources');
 
 jest.mock('uuid/v4');
