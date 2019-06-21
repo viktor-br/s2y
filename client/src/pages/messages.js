@@ -7,7 +7,13 @@ import {split} from "apollo-link";
 import {getMainDefinition} from "apollo-utilities";
 import {ApolloClient} from "apollo-client";
 import {InMemoryCache} from "apollo-cache-inmemory";
-import gql from "graphql-tag";
+import { Container, Grid } from '@material-ui/core';
+import {
+  receiveMessage,
+  sendMessage,
+  getMessages,
+} from '../gql';
+import { Message, CreateMessage } from "../components";
 
 const wsLink = new WebSocketLink({
   uri: process.env.REACT_APP_SEND2YOURSELF_WS_URI,
@@ -34,33 +40,6 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-const receiveMessage = gql`
-  subscription {
-    receiveMessage {
-      uuid
-      content
-      createdAt
-    }
-  }
-`;
-
-const sendMessage = gql`
-  mutation SendMessage ($content: String!) {
-    sendMessage(content: $content) {
-      content
-    }
-  }
-`;
-
-const getMessages = gql`
-  query {
-    getMessages {
-      uuid
-      content
-      createdAt
-    }
-  }
-`;
 
 class Messages extends Component {
   constructor(props) {
@@ -109,40 +88,47 @@ class Messages extends Component {
   }
 
   render() {
-    let input;
-
-    return <ApolloProvider client={client}>
-
-      <div>
-        {
-          this.state.messages.map((item, key) =>
-            <div>{item.content}</div>
-          )
-        }
-      </div>
-
-
-      <Mutation mutation={sendMessage}>
-        {(sendMessage, {data}) => (
-          <div>
-            <form
-              onSubmit={e => {
-                e.preventDefault();
-                sendMessage({variables: {content: input.value}});
-                input.value = "";
-              }}
+    return <Container>
+      <ApolloProvider client={client}>
+        <Grid
+          container
+          direction="column"
+          justify="center"
+          alignItems="center"
+        >
+          <Grid item>
+            <Grid
+              container
+              direction="column"
+              spacing={1}
             >
-              <input
-                ref={node => {
-                  input = node;
-                }}
-              />
-              <button type="submit">Send</button>
-            </form>
-          </div>
-        )}
-      </Mutation>
-    </ApolloProvider>
+              {
+                this.state.messages.map((item, key) =>
+                  <Grid item>
+                    <Message
+                      item={item}
+                      onDelete={(item) => console.log(item)}
+                    />
+                  </Grid>
+                )
+              }
+            </Grid>
+          </Grid>
+
+          <Mutation mutation={sendMessage}>
+            {
+              (sendMessage, {data}) => (
+                <CreateMessage
+                  onCreate={
+                    (content) => sendMessage({variables: {content}})
+                  }
+                />
+              )
+            }
+          </Mutation>
+        </Grid>
+      </ApolloProvider>
+    </Container>
   }
 }
 

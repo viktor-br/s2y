@@ -31,3 +31,11 @@
     transform: rotate(360deg);
   }
 }
+
+.message {
+  padding: 0 10px;
+}
+
+.delete {
+  cursor: pointer;
+}
