@@ -7,7 +7,7 @@ import {split} from "apollo-link";
 import {getMainDefinition} from "apollo-utilities";
 import {ApolloClient} from "apollo-client";
 import {InMemoryCache} from "apollo-cache-inmemory";
-import { Container, Grid } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import {
   receiveMessage,
   sendMessage,
@@ -88,9 +88,9 @@ class Messages extends Component {
   }
 
   render() {
-    return <Container>
-      <ApolloProvider client={client}>
-        <Grid
+    return <ApolloProvider client={client}>
+        <
+          Grid
           container
           direction="column"
           justify="center"
@@ -114,21 +114,21 @@ class Messages extends Component {
               }
             </Grid>
           </Grid>
-
-          <Mutation mutation={sendMessage}>
-            {
-              (sendMessage, {data}) => (
-                <CreateMessage
-                  onCreate={
-                    (content) => sendMessage({variables: {content}})
-                  }
-                />
-              )
-            }
-          </Mutation>
+          <Grid item>
+            <Mutation mutation={sendMessage}>
+              {
+                (sendMessage, {data}) => (
+                  <CreateMessage
+                    onCreate={
+                      (content) => sendMessage({variables: {content}})
+                    }
+                  />
+                )
+              }
+            </Mutation>
+          </Grid>
         </Grid>
       </ApolloProvider>
-    </Container>
   }
 }
 

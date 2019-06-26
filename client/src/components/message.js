@@ -1,6 +1,7 @@
-import {Grid, Paper, Typography} from "@material-ui/core";
-import {DeleteForever} from "@material-ui/icons";
+import { Card, Typography, CardHeader } from "@material-ui/core";
+import { DeleteForever} from "@material-ui/icons";
 import React, { Component } from "react";
+import CardContent from "@material-ui/core/CardContent";
 
 class Message extends Component {
   constructor(props) {
@@ -13,28 +14,17 @@ class Message extends Component {
   }
 
   render() {
-    return <Paper className="message">
-        <Grid
-          container
-          justify="space-between"
-        >
-          <Grid item>
-            <Typography>
-              {this.item.content}
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            className="delete"
-            onClick={() => this.onDelete(this.item)}
-          >
-            <DeleteForever/>
-            <Typography variant="body2">
-              Remove
-            </Typography>
-          </Grid>
-        </Grid>
-      </Paper>
+    return <Card>
+      <CardHeader
+        action={<DeleteForever onClick={() => this.onDelete(this.item)}/>}
+        subheader="September 14, 2016"
+      />
+      <CardContent>
+        <Typography>
+          {this.item.content}
+        </Typography>
+      </CardContent>
+    </Card>
   }
 }
 

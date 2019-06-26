@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import {Button, Grid, TextField} from "@material-ui/core";
+import { Button, Grid, TextField } from "@material-ui/core";
+import CreateMessageSend from "./create-message-send";
 
 class CreateMessage extends Component {
   constructor(props) {
@@ -15,16 +16,18 @@ class CreateMessage extends Component {
     return <Grid
       container
       direction="row"
-      justify="center"
+      justify="flex-end"
       spacing={0}
-      alignItems="center"
+      alignItems="flex-end"
     >
       <Grid item>
         <TextField
           id="message"
           label="Message"
-          type="search"
+          multiline
+          rows="3"
           margin="normal"
+          variant="outlined"
           value={this.state.message}
           onChange={
             (e) => this.setState({
@@ -34,13 +37,11 @@ class CreateMessage extends Component {
         />
       </Grid>
       <Grid item>
-        <Button
-          variant="contained"
-          color="primary"
+        <CreateMessageSend
           onClick={
             () => this.onCreate(this.state.message)
           }
-        >Send</Button>
+        />
       </Grid>
     </Grid>
   }
