@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
-// import logo from './logo.svg';
+import React from 'react';
 import './App.css';
-import {BrowserRouter, Switch, Route} from "react-router-dom";
-import {Home, Login, Messages} from './pages';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
-import {Container, Toolbar, IconButton, InputBase} from "@material-ui/core";
+import {
+  Container,
+  Toolbar,
+  IconButton,
+  InputBase,
+} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import { fade, makeStyles } from '@material-ui/core/styles';
+import { Home, Login, Messages } from './pages';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -68,9 +72,9 @@ const useStyles = makeStyles(theme => ({
 
 const App = () => {
   const classes = useStyles();
-  const [user] = useState(null);
 
-  return <Container maxWidth="sm" className={classes.root}>
+  return (
+    <Container maxWidth="sm" className={classes.root}>
       <AppBar color="primary" position="static">
         <Toolbar>
           <IconButton
@@ -98,12 +102,13 @@ const App = () => {
       </AppBar>
       <BrowserRouter>
         <Switch>
-          <Route path={'/'} exact component={Home} />
-          <Route path={'/login'} exact component={Login} />
-          <Route path={'/messages'} component={Messages} />
+          <Route path="/" exact component={Home} />
+          <Route path="/login" exact component={Login} />
+          <Route path="/messages" component={Messages} />
         </Switch>
       </BrowserRouter>
-    </Container>;
+    </Container>
+  );
 };
 
 export default App;

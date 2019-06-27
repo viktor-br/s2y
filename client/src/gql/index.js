@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 const receiveMessage = gql`
     subscription {
@@ -32,4 +32,4 @@ export {
   receiveMessage,
   sendMessage,
   getMessages,
-}
+};

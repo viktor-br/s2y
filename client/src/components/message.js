@@ -1,7 +1,7 @@
-import { Card, Typography, CardHeader } from "@material-ui/core";
-import { DeleteForever} from "@material-ui/icons";
-import React, { Component } from "react";
-import CardContent from "@material-ui/core/CardContent";
+import { Card, Typography, CardHeader } from '@material-ui/core';
+import { DeleteForever } from '@material-ui/icons';
+import React, { Component } from 'react';
+import CardContent from '@material-ui/core/CardContent';
 
 class Message extends Component {
   constructor(props) {
@@ -14,17 +14,19 @@ class Message extends Component {
   }
 
   render() {
-    return <Card>
-      <CardHeader
-        action={<DeleteForever onClick={() => this.onDelete(this.item)}/>}
-        subheader="September 14, 2016"
-      />
-      <CardContent>
-        <Typography>
-          {this.item.content}
-        </Typography>
-      </CardContent>
-    </Card>
+    return (
+      <Card>
+        <CardHeader
+          action={<DeleteForever onClick={() => this.onDelete(this.item)} />}
+          subheader="September 14, 2016"
+        />
+        <CardContent>
+          <Typography>
+            {this.item.content}
+          </Typography>
+        </CardContent>
+      </Card>
+    );
   }
 }
 

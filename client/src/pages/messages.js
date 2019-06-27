@@ -1,25 +1,25 @@
-import React, {Component} from 'react';
-import ApolloProvider from "react-apollo/ApolloProvider";
-import {Mutation} from "react-apollo";
-import {WebSocketLink} from "apollo-link-ws";
-import {HttpLink} from "apollo-link-http";
-import {split} from "apollo-link";
-import {getMainDefinition} from "apollo-utilities";
-import {ApolloClient} from "apollo-client";
-import {InMemoryCache} from "apollo-cache-inmemory";
+import React, { Component } from 'react';
+import ApolloProvider from 'react-apollo/ApolloProvider';
+import { Mutation } from 'react-apollo';
+import { WebSocketLink } from 'apollo-link-ws';
+import { HttpLink } from 'apollo-link-http';
+import { split } from 'apollo-link';
+import { getMainDefinition } from 'apollo-utilities';
+import { ApolloClient } from 'apollo-client';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 import { Grid } from '@material-ui/core';
 import {
   receiveMessage,
   sendMessage,
   getMessages,
 } from '../gql';
-import { Message, CreateMessage } from "../components";
+import { Message, CreateMessage } from '../components';
 
 const wsLink = new WebSocketLink({
   uri: process.env.REACT_APP_SEND2YOURSELF_WS_URI,
   options: {
-    reconnect: true
-  }
+    reconnect: true,
+  },
 });
 
 const httpLink = new HttpLink({
@@ -27,8 +27,8 @@ const httpLink = new HttpLink({
 });
 
 const link = split(
-  ({query}) => {
-    const {kind, operation} = getMainDefinition(query);
+  ({ query }) => {
+    const { kind, operation } = getMainDefinition(query);
     return kind === 'OperationDefinition' && operation === 'subscription';
   },
   wsLink,
@@ -36,7 +36,7 @@ const link = split(
 );
 
 const client = new ApolloClient({
-  link: link,
+  link,
   cache: new InMemoryCache(),
 });
 
@@ -48,13 +48,6 @@ class Messages extends Component {
     this.state = {
       messages: [],
     };
-  };
-
-  addMessage(message) {
-    let messages = this.state.messages;
-    messages.push(message);
-
-    this.setState(messages)
   }
 
   componentDidMount() {
@@ -62,35 +55,43 @@ class Messages extends Component {
       query: getMessages,
     }).then(
       (data) => {
-        let messages = data.data.getMessages;
-        this.setState({messages});
+        const messages = data.data.getMessages;
+        this.setState({ messages });
       },
       (err) => {
         // TODO cannot get messages
         console.log(err);
-      }
+      },
     ).catch(
       (error) => {
         console.log(error);
-      }
+      },
     );
     client.subscribe({
       query: receiveMessage,
     }).subscribe({
       next: (data) => {
         this.addMessage(data.data.receiveMessage);
-        console.log(this.state.messages[0]);
+        const { messages } = data.data;
+        console.log(messages[0]);
       },
       error(value) {
         console.log(value);
-      }
+      },
     });
   }
 
+  addMessage(message) {
+    const { messages } = this.state;
+    messages.push(message);
+
+    this.setState(messages);
+  }
+
   render() {
-    return <ApolloProvider client={client}>
-        <
-          Grid
+    return (
+      <ApolloProvider client={client}>
+        <Grid
           container
           direction="column"
           justify="center"
@@ -103,24 +104,24 @@ class Messages extends Component {
               spacing={1}
             >
               {
-                this.state.messages.map((item, key) =>
-                  <Grid item>
+                this.state.messages.map(item => (
+                  <Grid item key={item.uuid}>
                     <Message
                       item={item}
-                      onDelete={(item) => console.log(item)}
+                      onDelete={msg => console.log(msg)}
                     />
                   </Grid>
-                )
+                ))
               }
             </Grid>
           </Grid>
           <Grid item>
             <Mutation mutation={sendMessage}>
               {
-                (sendMessage, {data}) => (
+                sendMessageHandler => (
                   <CreateMessage
                     onCreate={
-                      (content) => sendMessage({variables: {content}})
+                      content => sendMessageHandler({ variables: { content } })
                     }
                   />
                 )
@@ -129,6 +130,7 @@ class Messages extends Component {
           </Grid>
         </Grid>
       </ApolloProvider>
+    );
   }
 }
 

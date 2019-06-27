@@ -1,6 +1,5 @@
-import React, {Component} from 'react';
-// import qs from 'querystringify';
-import {Redirect} from 'react-router-dom';
+import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import GoogleSignIn from '../GoogleSignIn';
 
 class Login extends Component {
@@ -12,7 +11,7 @@ class Login extends Component {
     };
 
     this.onSignInSuccess = this.onSignInSuccess.bind(this);
-  };
+  }
 
   async onSignInSuccess(token) {
     const response = await fetch(
@@ -20,14 +19,12 @@ class Login extends Component {
       {
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
+          Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-            token,
-          },
-        ),
-      }).catch(err => console.log(err));
+        body: JSON.stringify({ token }),
+      },
+    ).catch(err => console.log(err));
 
 
     if (response.status === 204) {
@@ -36,15 +33,16 @@ class Login extends Component {
   }
 
   render() {
-    if (this.state.authenticated) {
-      return <Redirect to='/messages/'/>;
+    const { authenticated } = this.state;
+    if (authenticated) {
+      return <Redirect to="/messages/" />;
     }
 
-    if (this.state.authenticated === false) {
-      return <div>Authentication failed. Please try again.</div>
+    if (authenticated === false) {
+      return <div>Authentication failed. Please try again.</div>;
     }
 
-    return <GoogleSignIn onSignInSuccess={this.onSignInSuccess}/>
+    return <GoogleSignIn onSignInSuccess={this.onSignInSuccess} />;
   }
 }
 

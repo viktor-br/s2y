@@ -4,4 +4,4 @@ import CreateMessage from './create-message';
 export {
   Message,
   CreateMessage,
-}
+};
