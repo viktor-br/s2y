@@ -1,33 +1,26 @@
 import { Card, Typography, CardHeader } from '@material-ui/core';
 import { DeleteForever } from '@material-ui/icons';
-import React, { Component } from 'react';
+import React from 'react';
 import CardContent from '@material-ui/core/CardContent';
 
-class Message extends Component {
-  constructor(props) {
-    super(props);
+function Message(props) {
+  const { item, onDelete } = props;
 
-    const { item, onDelete } = props;
+  const { content } = item;
 
-    this.item = item;
-    this.onDelete = onDelete;
-  }
-
-  render() {
-    return (
-      <Card>
-        <CardHeader
-          action={<DeleteForever onClick={() => this.onDelete(this.item)} />}
-          subheader="September 14, 2016"
-        />
-        <CardContent>
-          <Typography>
-            {this.item.content}
-          </Typography>
-        </CardContent>
-      </Card>
-    );
-  }
+  return (
+    <Card>
+      <CardHeader
+        action={<DeleteForever onClick={() => onDelete(item)} />}
+        subheader="September 14, 2016"
+      />
+      <CardContent>
+        <Typography>
+          {content}
+        </Typography>
+      </CardContent>
+    </Card>
+  );
 }
 
 export default Message;

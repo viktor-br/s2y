@@ -11,7 +11,7 @@ const useStyles = makeStyles(
     },
   }),
 );
-export default function CreateMessageSend(props) {
+function CreateMessageSend(props) {
   const { onClick } = props;
   const classes = useStyles();
   const theme = useTheme();
@@ -27,3 +27,5 @@ export default function CreateMessageSend(props) {
     </Fab>
   );
 }
+
+export default CreateMessageSend;
