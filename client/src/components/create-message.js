@@ -1,11 +1,21 @@
 import React, { useState } from 'react';
-import { Grid, TextField } from '@material-ui/core';
+import {Grid, makeStyles, TextField} from '@material-ui/core';
 import CreateMessageSend from './create-message-send';
+
+const useStyles = makeStyles(
+  theme => ({
+    createMessage: {
+      width: '100%',
+    },
+  }),
+);
 
 function CreateMessage(props) {
   const { message: initMessage, onCreate } = props;
 
   const [message, setMessage] = useState(initMessage);
+
+  const classes = useStyles();
 
   return (
     <Grid
@@ -15,7 +25,7 @@ function CreateMessage(props) {
       spacing={0}
       alignItems="flex-end"
     >
-      <Grid item>
+      <Grid item className={classes.createMessage}>
         <TextField
           id="message"
           label="Message"
@@ -24,6 +34,7 @@ function CreateMessage(props) {
           margin="normal"
           variant="outlined"
           value={message}
+          className={classes.createMessage}
           onChange={
             e => setMessage(e.target.value)
           }

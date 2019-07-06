@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import ApolloProvider from 'react-apollo/ApolloProvider';
 import { Mutation } from 'react-apollo';
-import { Grid } from '@material-ui/core';
+import { Grid, makeStyles } from '@material-ui/core';
 import {
   receiveMessage,
   sendMessage,
@@ -12,95 +12,114 @@ import { CreateApiClient } from '../api';
 
 const ApiClient = CreateApiClient();
 
-class Messages extends Component {
-  constructor(props) {
-    super(props);
+const useStyles = makeStyles(
+  theme => ({
+    messages: {
+      paddingTop: '10px',
+    },
+    messagesItem: {
+      height: '80vh',
+      overflow: 'auto',
+      width: '99%',
+    },
+    message: {
+      margin: '1px',
+    },
+    createMessage: {
+      width: '99%',
+    },
+  }),
+);
 
-    this.state = {
-      messages: [],
-    };
-  }
+function Messages() {
+  const [messages, setMessages] = useState([]);
 
-  componentDidMount() {
-    ApiClient.query({
-      query: getMessages,
-    }).then(
-      (data) => {
-        const messages = data.data.getMessages;
-        this.setState({ messages });
-      },
-      (err) => {
-        // TODO cannot get messages
-        console.log(err);
-      },
-    ).catch(
-      (error) => {
-        console.log(error);
-      },
-    );
-    ApiClient.subscribe({
-      query: receiveMessage,
-    }).subscribe({
-      next: (data) => {
-        this.addMessage(data.data.receiveMessage);
-      },
-      error(value) {
-        console.log(value);
-      },
-    });
-  }
+  const classes = useStyles();
 
-  addMessage(message) {
-    const { messages } = this.state;
-    messages.push(message);
+  useEffect(
+    () => {
+      ApiClient.query({
+        query: getMessages,
+      }).then(
+        (data) => {
+          setMessages(data.data.getMessages);
+        },
+        (err) => {
+          // TODO cannot get messages
+          console.log(err);
+        },
+      ).catch(
+        (error) => {
+          console.log(error);
+        },
+      );
+    },
+    [],
+  );
 
-    this.setState(messages);
-  }
+  useEffect(
+    () => {
+      ApiClient.subscribe({
+        query: receiveMessage,
+      }).subscribe({
+        next: (data) => {
+          setMessages(currentMessages => [...currentMessages, data.data.receiveMessage]);
+        },
+        error(value) {
+          console.log(value);
+        },
+      });
+    },
+    [],
+  );
 
-  render() {
-    return (
-      <ApolloProvider client={ApiClient}>
+  return (
+    <ApolloProvider client={ApiClient}>
+      <Grid
+        container
+        direction="column"
+        justify="center"
+        alignItems="center"
+        className={classes.messages}
+      >
         <Grid
-          container
-          direction="column"
-          justify="center"
-          alignItems="center"
+          item
+          className={classes.messagesItem}
         >
-          <Grid item>
-            <Grid
-              container
-              direction="column"
-              spacing={1}
-            >
-              {
-                this.state.messages.map(item => (
-                  <Grid item key={item.uuid}>
-                    <Message
-                      item={item}
-                      onDelete={msg => console.log(msg)}
-                    />
-                  </Grid>
-                ))
-              }
-            </Grid>
-          </Grid>
-          <Grid item>
-            <Mutation mutation={sendMessage}>
-              {
-                sendMessageHandler => (
-                  <CreateMessage
-                    onCreate={
-                      content => sendMessageHandler({ variables: { content } })
-                    }
+          <Grid
+            container
+            direction="column"
+            spacing={1}
+          >
+            {
+              messages.map(item => (
+                <Grid item key={item.uuid} className={classes.message}>
+                  <Message
+                    item={item}
+                    onDelete={msg => console.log(msg)}
                   />
-                )
-              }
-            </Mutation>
+                </Grid>
+              ))
+            }
           </Grid>
         </Grid>
-      </ApolloProvider>
-    );
-  }
+        <Grid item className={classes.createMessage}>
+          <Mutation mutation={sendMessage}>
+            {
+              sendMessageHandler => (
+                <CreateMessage
+                  className={classes.createMessage}
+                  onCreate={
+                    content => sendMessageHandler({ variables: { content } })
+                  }
+                />
+              )
+            }
+          </Mutation>
+        </Grid>
+      </Grid>
+    </ApolloProvider>
+  );
 }
 
 export default Messages;

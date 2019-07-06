@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     padding: 0,
-    // height: '600px',
+    minHeight: '100vh',
     // overflow: 'hidden',
     // overflow: scroll; // inner
   },
