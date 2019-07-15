@@ -14,12 +14,14 @@ import { fade, makeStyles } from '@material-ui/core/styles';
 import { Home, Login, Messages } from './pages';
 
 const useStyles = makeStyles(theme => ({
-  root: {
+  container: {
     flexGrow: 1,
     padding: 0,
-    minHeight: '100vh',
-    // overflow: 'hidden',
-    // overflow: scroll; // inner
+    height: '100vh',
+    overflow: 'hidden',
+  },
+  header: {
+    height: '10vh',
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -74,8 +76,8 @@ const App = () => {
   const classes = useStyles();
 
   return (
-    <Container maxWidth="sm" className={classes.root}>
-      <AppBar color="primary" position="static">
+    <Container maxWidth="sm" className={classes.container}>
+      <AppBar color="primary" position="static" className={classes.header}>
         <Toolbar>
           <IconButton
             edge="start"

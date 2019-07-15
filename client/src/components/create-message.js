@@ -5,6 +5,9 @@ import CreateMessageSend from './create-message-send';
 const useStyles = makeStyles(
   theme => ({
     createMessage: {
+      width: '85%',
+    },
+    createMessageText: {
       width: '100%',
     },
   }),
@@ -21,11 +24,14 @@ function CreateMessage(props) {
     <Grid
       container
       direction="row"
-      justify="flex-end"
-      spacing={0}
+      justify="flex-start"
       alignItems="flex-end"
+      spacing={0}
     >
-      <Grid item className={classes.createMessage}>
+      <Grid
+        item
+        className={classes.createMessage}
+      >
         <TextField
           id="message"
           label="Message"
@@ -34,7 +40,7 @@ function CreateMessage(props) {
           margin="normal"
           variant="outlined"
           value={message}
-          className={classes.createMessage}
+          className={classes.createMessageText}
           onChange={
             e => setMessage(e.target.value)
           }

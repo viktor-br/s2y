@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ApolloProvider from 'react-apollo/ApolloProvider';
 import { Mutation } from 'react-apollo';
 import { Grid, makeStyles } from '@material-ui/core';
@@ -15,24 +15,32 @@ const ApiClient = CreateApiClient();
 const useStyles = makeStyles(
   theme => ({
     messages: {
-      paddingTop: '10px',
+      height: '90vh',
+      // paddingTop: '10px',
+      flexWrap: 'nowrap',
+      padding: theme.spacing(1),
     },
     messagesItem: {
       height: '80vh',
-      overflow: 'auto',
+      overflow: 'scroll',
       width: '99%',
     },
     message: {
       margin: '1px',
+      paddingTop: '10px',
     },
     createMessage: {
       width: '99%',
+      height: '20vh',
     },
   }),
 );
 
+const scrollToRef = ref => ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
 function Messages() {
   const [messages, setMessages] = useState([]);
+  const messagesEndRef = useRef(null);
 
   const classes = useStyles();
 
@@ -73,6 +81,8 @@ function Messages() {
     [],
   );
 
+  useEffect(() => scrollToRef(messagesEndRef));
+
   return (
     <ApolloProvider client={ApiClient}>
       <Grid
@@ -89,18 +99,18 @@ function Messages() {
           <Grid
             container
             direction="column"
-            spacing={1}
           >
             {
               messages.map(item => (
                 <Grid item key={item.uuid} className={classes.message}>
                   <Message
                     item={item}
-                    onDelete={msg => console.log(msg)}
+                    onDelete={msg => {console.log(msg);}}
                   />
                 </Grid>
               ))
             }
+            <Grid item ref={messagesEndRef} className={classes.message} />
           </Grid>
         </Grid>
         <Grid item className={classes.createMessage}>

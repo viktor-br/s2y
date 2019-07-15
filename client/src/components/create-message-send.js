@@ -1,13 +1,13 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
-import { Done } from '@material-ui/icons';
+import { Send } from '@material-ui/icons';
 
 const useStyles = makeStyles(
   theme => ({
     createMessageSend: {
-      bottom: theme.spacing(7),
-      right: theme.spacing(2),
+      // bottom: theme.spacing(7),
+      // right: theme.spacing(2),
     },
   }),
 );
@@ -24,7 +24,7 @@ function CreateMessageSend(props) {
       className={classes.createMessageSend}
       onClick={onClick}
     >
-      <Done />
+      <Send />
     </Fab>
   );
 }
