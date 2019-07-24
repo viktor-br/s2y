@@ -9,6 +9,10 @@ const useStyles = makeStyles(
     },
     createMessageText: {
       width: '100%',
+      margin: 0,
+    },
+    createMessageSend: {
+      padding: '3px',
     },
   }),
 );
@@ -46,7 +50,10 @@ function CreateMessage(props) {
           }
         />
       </Grid>
-      <Grid item>
+      <Grid
+        item
+        className={classes.createMessageSend}
+      >
         <CreateMessageSend
           onClick={
             () => onCreate(message)

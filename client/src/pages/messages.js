@@ -18,7 +18,7 @@ const useStyles = makeStyles(
       height: '90vh',
       // paddingTop: '10px',
       flexWrap: 'nowrap',
-      padding: theme.spacing(1),
+      padding: '3px',
     },
     messagesItem: {
       height: '80vh',
