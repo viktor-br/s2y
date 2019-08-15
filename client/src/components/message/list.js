@@ -6,9 +6,10 @@ import {
   receiveMessage,
   sendMessage,
   getMessages,
-} from '../gql';
-import { Message, CreateMessage } from '../components';
-import { CreateApiClient } from '../api';
+} from '../../gql';
+import NewMessage from './new';
+import MessageCard from './card';
+import { CreateApiClient } from '../../api';
 
 const ApiClient = CreateApiClient();
 
@@ -38,7 +39,7 @@ const useStyles = makeStyles(
 
 const scrollToRef = ref => ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-function Messages() {
+function MessageList() {
   const [messages, setMessages] = useState([]);
   const messagesEndRef = useRef(null);
 
@@ -103,7 +104,7 @@ function Messages() {
             {
               messages.map(item => (
                 <Grid item key={item.uuid} className={classes.message}>
-                  <Message
+                  <MessageCard
                     item={item}
                     onDelete={msg => {console.log(msg);}}
                   />
@@ -117,7 +118,7 @@ function Messages() {
           <Mutation mutation={sendMessage}>
             {
               sendMessageHandler => (
-                <CreateMessage
+                <NewMessage
                   className={classes.createMessage}
                   onCreate={
                     content => sendMessageHandler({ variables: { content } })
@@ -132,4 +133,4 @@ function Messages() {
   );
 }
 
-export default Messages;
+export default MessageList;

@@ -3,7 +3,7 @@ import { DeleteForever } from '@material-ui/icons';
 import React from 'react';
 import CardContent from '@material-ui/core/CardContent';
 
-function Message(props) {
+function MessageCard(props) {
   const { item, onDelete } = props;
 
   const { content } = item;
@@ -23,4 +23,4 @@ function Message(props) {
   );
 }
 
-export default Message;
+export default MessageCard;

@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
-import {Grid, makeStyles, TextField} from '@material-ui/core';
-import CreateMessageSend from './create-message-send';
+import {
+  Grid,
+  makeStyles,
+  TextField,
+  Fab,
+} from '@material-ui/core';
+import { Send } from '@material-ui/icons';
 
 const useStyles = makeStyles(
   theme => ({
@@ -17,7 +22,7 @@ const useStyles = makeStyles(
   }),
 );
 
-function CreateMessage(props) {
+function NewMessage(props) {
   const { message: initMessage, onCreate } = props;
 
   const [message, setMessage] = useState(initMessage);
@@ -54,14 +59,18 @@ function CreateMessage(props) {
         item
         className={classes.createMessageSend}
       >
-        <CreateMessageSend
-          onClick={
-            () => onCreate(message)
-          }
-        />
+        <Fab
+          size="small"
+          color="primary"
+          aria-label="Add"
+          className={classes.createMessageSend}
+          onClick={() => onCreate(message)}
+        >
+          <Send />
+        </Fab>
       </Grid>
     </Grid>
   );
 }
 
-export default CreateMessage;
+export default NewMessage;

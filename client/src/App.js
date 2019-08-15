@@ -11,7 +11,9 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import { fade, makeStyles } from '@material-ui/core/styles';
-import { Home, Login, Messages } from './pages';
+import { MessageList } from './components/message';
+import Home from './components/home';
+import Login from './components/login';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -81,7 +83,6 @@ const App = () => {
         <Toolbar>
           <IconButton
             edge="start"
-            // className={classes.menuButton}
             color="inherit"
             aria-label="Open drawer"
           >
@@ -106,7 +107,7 @@ const App = () => {
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/login" exact component={Login} />
-          <Route path="/messages" component={Messages} />
+          <Route path="/messages" component={MessageList} />
         </Switch>
       </BrowserRouter>
     </Container>

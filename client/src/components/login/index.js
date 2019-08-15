@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import GoogleSignIn from '../GoogleSignIn';
+import GoogleSignIn from '../../auth/google-sign-in';
 
 class Login extends Component {
   constructor(props) {
