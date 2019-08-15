@@ -6,7 +6,10 @@ function ProtectedRoute({ component: Component, authenticated, ...rest }) {
     <Route
       {...rest}
       render={
-        (props) => authenticated === true ? <Component {...props} /> : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
+        props => (
+          // eslint-disable-next-line max-len
+          authenticated === true ? <Component {...props} /> : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
+        )
       }
     />
   );

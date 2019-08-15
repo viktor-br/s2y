@@ -106,7 +106,7 @@ function MessageList() {
                 <Grid item key={item.uuid} className={classes.message}>
                   <MessageCard
                     item={item}
-                    onDelete={msg => {console.log(msg);}}
+                    onDelete={msg => console.log(msg)}
                   />
                 </Grid>
               ))
