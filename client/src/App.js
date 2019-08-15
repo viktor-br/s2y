@@ -11,9 +11,13 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import { fade, makeStyles } from '@material-ui/core/styles';
+import { ApolloProvider } from '@apollo/react-hooks';
 import { MessageList } from './components/message';
 import Home from './components/home';
 import Login from './components/login';
+import { CreateApiClient } from './api';
+
+const ApiClient = CreateApiClient();
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -78,39 +82,41 @@ const App = () => {
   const classes = useStyles();
 
   return (
-    <Container maxWidth="sm" className={classes.container}>
-      <AppBar color="primary" position="static" className={classes.header}>
-        <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="Open drawer"
-          >
-            <MenuIcon />
-          </IconButton>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
+    <ApolloProvider client={ApiClient}>
+      <Container maxWidth="sm" className={classes.container}>
+        <AppBar color="primary" position="static" className={classes.header}>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="Open drawer"
+            >
+              <MenuIcon />
+            </IconButton>
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ 'aria-label': 'Search' }}
+              />
             </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'Search' }}
-            />
-          </div>
-        </Toolbar>
-      </AppBar>
-      <BrowserRouter>
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/login" exact component={Login} />
-          <Route path="/messages" component={MessageList} />
-        </Switch>
-      </BrowserRouter>
-    </Container>
+          </Toolbar>
+        </AppBar>
+        <BrowserRouter>
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/login" exact component={Login} />
+            <Route path="/messages" component={MessageList} />
+          </Switch>
+        </BrowserRouter>
+      </Container>
+    </ApolloProvider>
   );
 };
 

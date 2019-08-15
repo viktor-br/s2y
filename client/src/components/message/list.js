@@ -1,20 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
-import ApolloProvider from 'react-apollo/ApolloProvider';
-import { Mutation } from 'react-apollo';
+import React, { useEffect, useRef } from 'react';
+import { useQuery, useSubscription } from '@apollo/react-hooks';
 import { Grid, makeStyles } from '@material-ui/core';
 import {
   receiveMessage,
-  sendMessage,
   getMessages,
 } from '../../gql';
 import NewMessage from './new';
 import MessageCard from './card';
-import { CreateApiClient } from '../../api';
-
-const ApiClient = CreateApiClient();
 
 const useStyles = makeStyles(
-  theme => ({
+  () => ({
     messages: {
       height: '90vh',
       // paddingTop: '10px',
@@ -37,99 +32,64 @@ const useStyles = makeStyles(
   }),
 );
 
-const scrollToRef = ref => ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+const scrollToRef = (ref) => {
+  if (ref.current) {
+    ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+};
 
 function MessageList() {
-  const [messages, setMessages] = useState([]);
   const messagesEndRef = useRef(null);
-
   const classes = useStyles();
-
-  useEffect(
-    () => {
-      ApiClient.query({
-        query: getMessages,
-      }).then(
-        (data) => {
-          setMessages(data.data.getMessages);
-        },
-        (err) => {
-          // TODO cannot get messages
-          console.log(err);
-        },
-      ).catch(
-        (error) => {
-          console.log(error);
-        },
-      );
-    },
-    [],
-  );
-
-  useEffect(
-    () => {
-      ApiClient.subscribe({
-        query: receiveMessage,
-      }).subscribe({
-        next: (data) => {
-          setMessages(currentMessages => [...currentMessages, data.data.receiveMessage]);
-        },
-        error(value) {
-          console.log(value);
-        },
-      });
-    },
-    [],
-  );
+  const { data, loading, error } = useQuery(getMessages);
+  const { data: subscriptionData } = useSubscription(receiveMessage);
 
   useEffect(() => scrollToRef(messagesEndRef));
 
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>ERROR</p>;
+
+  let { getMessages: messages } = data;
+  if (subscriptionData) {
+    const { receiveMessage: newMessage } = subscriptionData;
+    messages = [...messages, newMessage];
+  }
+
   return (
-    <ApolloProvider client={ApiClient}>
+    <Grid
+      container
+      direction="column"
+      justify="center"
+      alignItems="center"
+      className={classes.messages}
+    >
       <Grid
-        container
-        direction="column"
-        justify="center"
-        alignItems="center"
-        className={classes.messages}
+        item
+        className={classes.messagesItem}
       >
         <Grid
-          item
-          className={classes.messagesItem}
+          container
+          direction="column"
         >
-          <Grid
-            container
-            direction="column"
-          >
-            {
-              messages.map(item => (
-                <Grid item key={item.uuid} className={classes.message}>
-                  <MessageCard
-                    item={item}
-                    onDelete={msg => console.log(msg)}
-                  />
-                </Grid>
-              ))
-            }
-            <Grid item ref={messagesEndRef} className={classes.message} />
-          </Grid>
-        </Grid>
-        <Grid item className={classes.createMessage}>
-          <Mutation mutation={sendMessage}>
-            {
-              sendMessageHandler => (
-                <NewMessage
-                  className={classes.createMessage}
-                  onCreate={
-                    content => sendMessageHandler({ variables: { content } })
-                  }
+          {
+            messages.map(item => (
+              <Grid item key={item.uuid} className={classes.message}>
+                <MessageCard
+                  item={item}
+                  onDelete={msg => console.log(msg)}
                 />
-              )
-            }
-          </Mutation>
+              </Grid>
+            ))
+          }
+          <Grid item ref={messagesEndRef} className={classes.message} />
         </Grid>
       </Grid>
-    </ApolloProvider>
+      <Grid item className={classes.createMessage}>
+        <NewMessage
+          className={classes.createMessage}
+        />
+      </Grid>
+    </Grid>
   );
 }
 

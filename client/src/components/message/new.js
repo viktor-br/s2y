@@ -6,9 +6,11 @@ import {
   Fab,
 } from '@material-ui/core';
 import { Send } from '@material-ui/icons';
+import { useMutation } from '@apollo/react-hooks';
+import { sendMessage } from '../../gql';
 
 const useStyles = makeStyles(
-  theme => ({
+  () => ({
     createMessage: {
       width: '85%',
     },
@@ -22,10 +24,9 @@ const useStyles = makeStyles(
   }),
 );
 
-function NewMessage(props) {
-  const { message: initMessage, onCreate } = props;
-
-  const [message, setMessage] = useState(initMessage);
+function NewMessage() {
+  const [message, setMessage] = useState('');
+  const [saveMessage] = useMutation(sendMessage);
 
   const classes = useStyles();
 
@@ -64,7 +65,7 @@ function NewMessage(props) {
           color="primary"
           aria-label="Add"
           className={classes.createMessageSend}
-          onClick={() => onCreate(message)}
+          onClick={() => saveMessage({ variables: { content: message } })}
         >
           <Send />
         </Fab>
