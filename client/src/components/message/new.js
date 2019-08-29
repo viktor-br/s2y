@@ -24,11 +24,15 @@ const useStyles = makeStyles(
   }),
 );
 
-function NewMessage() {
+const NewMessage = (props) => {
+  const { onCreate } = props;
   const [message, setMessage] = useState('');
-  const [saveMessage] = useMutation(sendMessage);
-
+  const [saveMessage, { data }] = useMutation(sendMessage);
   const classes = useStyles();
+
+  if (data) {
+    onCreate();
+  }
 
   return (
     <Grid
@@ -50,6 +54,7 @@ function NewMessage() {
           margin="normal"
           variant="outlined"
           value={message}
+          aria-label="Add Message Content"
           className={classes.createMessageText}
           onChange={
             e => setMessage(e.target.value)
@@ -61,9 +66,10 @@ function NewMessage() {
         className={classes.createMessageSend}
       >
         <Fab
+          id="add-message"
           size="small"
           color="primary"
-          aria-label="Add"
+          aria-label="Add Message"
           className={classes.createMessageSend}
           onClick={() => saveMessage({ variables: { content: message } })}
         >
@@ -72,6 +78,6 @@ function NewMessage() {
       </Grid>
     </Grid>
   );
-}
+};
 
 export default NewMessage;

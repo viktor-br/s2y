@@ -38,7 +38,7 @@ const scrollToRef = (ref) => {
   }
 };
 
-function MessageList() {
+const MessageList = () => {
   const messagesEndRef = useRef(null);
   const classes = useStyles();
   const { data, loading, error } = useQuery(getMessages);
@@ -91,6 +91,6 @@ function MessageList() {
       </Grid>
     </Grid>
   );
-}
+};
 
 export default MessageList;

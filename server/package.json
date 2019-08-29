@@ -29,14 +29,15 @@
     "eslint-plugin-import": "^2.17.3",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.13.0",
+    "eslint-utils": "^1.4.2",
     "jest": "^24.7.1",
     "nodemon": "^1.19.0"
   },
   "scripts": {
     "start": "nodemon ./src/server.js",
     "test": "NODE_ENV=test ./node_modules/.bin/jest",
-    "lint": "./node_modules/.bin/eslint .",
-    "coverage": "NODE_ENV=test ./node_modules/.bin/jest --coverage"
+    "test:coverage": "NODE_ENV=test ./node_modules/.bin/jest --coverage",
+    "lint": "./node_modules/.bin/eslint ."
   },
   "author": "Viktor Brusylovets",
   "license": "MIT"

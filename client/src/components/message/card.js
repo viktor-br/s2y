@@ -3,16 +3,16 @@ import { DeleteForever } from '@material-ui/icons';
 import React from 'react';
 import CardContent from '@material-ui/core/CardContent';
 
-function MessageCard(props) {
+const MessageCard = (props) => {
   const { item, onDelete } = props;
-
-  const { content } = item;
+  // TODO handle date properly
+  const { content, date } = item;
 
   return (
     <Card>
       <CardHeader
-        action={<DeleteForever onClick={() => onDelete(item)} />}
-        subheader="September 14, 2016"
+        action={<DeleteForever onClick={() => onDelete(item)}>Delete</DeleteForever>}
+        subheader={date}
       />
       <CardContent>
         <Typography>
@@ -21,6 +21,6 @@ function MessageCard(props) {
       </CardContent>
     </Card>
   );
-}
+};
 
 export default MessageCard;
