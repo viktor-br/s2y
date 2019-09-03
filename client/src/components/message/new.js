@@ -30,7 +30,7 @@ const NewMessage = (props) => {
   const [saveMessage, { data }] = useMutation(sendMessage);
   const classes = useStyles();
 
-  if (data) {
+  if (data && onCreate) {
     onCreate();
   }
 

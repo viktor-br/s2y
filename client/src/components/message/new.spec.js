@@ -33,7 +33,6 @@ describe('new message component', () => {
       </MockedProvider>,
     );
 
-
     wrapper.find('textarea#message').simulate('click');
     wrapper.find('textarea#message').simulate('change', { target: { value: message } });
     await waitForExpect(() => {

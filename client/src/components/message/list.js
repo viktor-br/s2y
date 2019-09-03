@@ -33,7 +33,7 @@ const useStyles = makeStyles(
 );
 
 const scrollToRef = (ref) => {
-  if (ref.current) {
+  if (ref.current && ref.current.scrollIntoView) {
     ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 };
