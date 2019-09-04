@@ -24,7 +24,7 @@ class Login extends Component {
         },
         body: JSON.stringify({ token }),
       },
-    ).catch(err => console.log(err));
+    ).catch((err) => console.log(err));
 
 
     if (response.status === 204) {

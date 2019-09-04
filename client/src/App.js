@@ -19,7 +19,7 @@ import { CreateApiClient } from './api';
 
 const ApiClient = CreateApiClient();
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   container: {
     flexGrow: 1,
     padding: 0,

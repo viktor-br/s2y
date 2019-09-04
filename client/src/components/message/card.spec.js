@@ -1,5 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
+import { CardHeader, CardContent } from '@material-ui/core';
+import { DeleteForever } from '@material-ui/icons';
 import Card from './card';
 
 describe('card component', () => {
@@ -9,8 +11,8 @@ describe('card component', () => {
     const item = { content, date };
     const wrapper = mount(<Card item={item} />);
 
-    expect(wrapper.text()).toMatch(content);
-    expect(wrapper.text()).toMatch(date);
+    expect(wrapper.find(CardHeader).text()).toMatch(date);
+    expect(wrapper.find(CardContent).text()).toMatch(content);
   });
 
   test('card deletion call', () => {
@@ -20,7 +22,9 @@ describe('card component', () => {
     const onDelete = jest.fn();
     const wrapper = mount(<Card item={item} onDelete={onDelete} />);
 
-    wrapper.find({ children: 'Delete' }).simulate('click');
+    const deleteElements = wrapper.find(DeleteForever);
+    expect(deleteElements).toHaveLength(1);
+    deleteElements.at(0).simulate('click');
     expect(onDelete).toHaveBeenCalledTimes(1);
   });
 });

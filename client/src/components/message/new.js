@@ -57,7 +57,7 @@ const NewMessage = (props) => {
           aria-label="Add Message Content"
           className={classes.createMessageText}
           onChange={
-            e => setMessage(e.target.value)
+            (e) => setMessage(e.target.value)
           }
         />
       </Grid>

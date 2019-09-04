@@ -3,6 +3,7 @@ import { mount } from 'enzyme';
 import { MockedProvider } from '@apollo/react-testing';
 import waitForExpect from 'wait-for-expect';
 import { act } from 'react-dom/test-utils';
+import { TextField, Fab } from '@material-ui/core';
 import NewMessage from './new';
 import { sendMessage } from '../../gql';
 
@@ -27,27 +28,34 @@ describe('new message component', () => {
         },
       },
     ];
-    const wrapper = mount(
-      <MockedProvider mocks={mocks} addTypename={false} resolvers={{}}>
-        <NewMessage onCreate={onCreate} />
-      </MockedProvider>,
-    );
-
-    wrapper.find('textarea#message').simulate('click');
-    wrapper.find('textarea#message').simulate('change', { target: { value: message } });
-    await waitForExpect(() => {
-      expect(wrapper.find('textarea#message')
-        .text())
-        .toEqual(message);
-    });
-
     await act(async () => {
-      await wrapper.find('button#add-message').simulate('click');
-    });
+      const wrapper = mount(
+        <MockedProvider mocks={mocks} addTypename={false} resolvers={{}}>
+          <NewMessage onCreate={onCreate} />
+        </MockedProvider>,
+      );
 
-    await waitForExpect(() => {
-      expect(onCreate)
-        .toHaveBeenCalledTimes(1);
+      expect(wrapper.find(TextField)).toHaveLength(1);
+
+      wrapper.find('textarea')
+        .at(0)
+        .simulate('click');
+      wrapper.find('textarea')
+        .at(0)
+        .simulate('change', { target: { value: message } });
+      // wrapper.find('textarea#message').simulate('change', { target: { value: message } });
+      await waitForExpect(() => {
+        wrapper.update();
+        expect(wrapper.find('textarea').at(0).text()).toEqual(message);
+      });
+
+      const sendMessageElements = wrapper.find(Fab);
+      expect(sendMessageElements).toHaveLength(1);
+      await sendMessageElements.at(0).simulate('click');
+
+      await waitForExpect(() => {
+        expect(onCreate).toHaveBeenCalledTimes(1);
+      });
     });
   });
 });

@@ -14,7 +14,7 @@ const MessageCard = (props) => {
         action={<DeleteForever onClick={() => onDelete(item)}>Delete</DeleteForever>}
         subheader={date}
       />
-      <CardContent data-test-id={item.uuid}>
+      <CardContent>
         <Typography>
           {content}
         </Typography>
