@@ -1,20 +1,13 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
-import {
-  Container,
-  Toolbar,
-  IconButton,
-  InputBase,
-} from '@material-ui/core';
+import { Container, Toolbar, IconButton, InputBase } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { ApolloProvider } from '@apollo/react-hooks';
-import { MessageList } from './components/message';
-import Home from './components/home';
-import Login from './components/login';
+import PagesSwitch from './components/pages-switch';
 import { CreateApiClient } from './api';
 
 const ApiClient = CreateApiClient();
@@ -86,11 +79,7 @@ const App = () => {
       <Container maxWidth="sm" className={classes.container}>
         <AppBar color="primary" position="static" className={classes.header}>
           <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="Open drawer"
-            >
+            <IconButton edge="start" color="inherit" aria-label="Open drawer">
               <MenuIcon />
             </IconButton>
             <div className={classes.search}>
@@ -109,11 +98,7 @@ const App = () => {
           </Toolbar>
         </AppBar>
         <BrowserRouter>
-          <Switch>
-            <Route path="/" exact component={Home} />
-            <Route path="/login" exact component={Login} />
-            <Route path="/messages" component={MessageList} />
-          </Switch>
+          <PagesSwitch />
         </BrowserRouter>
       </Container>
     </ApolloProvider>

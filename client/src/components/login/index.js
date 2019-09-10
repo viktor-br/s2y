@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 import GoogleSignIn from '../../auth/google-sign-in';
 
 class Login extends Component {
   constructor(props) {
     super(props);
+    const { onAuthenticated } = props;
 
     this.state = {
       authenticated: null,
     };
+
+    this.onAuthenticated = onAuthenticated;
 
     this.onSignInSuccess = this.onSignInSuccess.bind(this);
   }
@@ -24,18 +26,22 @@ class Login extends Component {
         },
         body: JSON.stringify({ token }),
       },
-    ).catch((err) => console.log(err));
+    );
+    // TODO add proper handler
+    // ).catch((err) => console.log(err));
 
-
+    let authenticated = false;
     if (response.status === 204) {
-      this.setState({ authenticated: true });
+      authenticated = true;
     }
+
+    this.setState({ authenticated });
   }
 
   render() {
     const { authenticated } = this.state;
-    if (authenticated) {
-      return <Redirect to="/messages/" />;
+    if (authenticated && this.onAuthenticated) {
+      return this.onAuthenticated();
     }
 
     if (authenticated === false) {

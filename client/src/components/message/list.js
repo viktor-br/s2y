@@ -40,12 +40,16 @@ const MessageList = ({ onDelete }) => {
   const { data: subscriptionData } = useSubscription(receiveMessage);
 
   useEffect(() => scrollToRef(messagesEndRef));
+  // TODO refactor next lines
+  let messages = [];
+  if (data) {
+    messages = data.getMessages
+  }
 
   // TODO what if query failed, but subscription not?!
   if (loading) return <p>Loading...</p>;
   if (error) return <p>ERROR</p>;
 
-  let { getMessages: messages } = data;
   if (subscriptionData) {
     const { receiveMessage: newMessage } = subscriptionData;
     messages = [...messages, newMessage];
