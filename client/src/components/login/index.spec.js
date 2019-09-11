@@ -8,11 +8,6 @@ describe('Login', () => {
 
   test.each([[204, true], [404, false]])('run onSignInSuccess', async (status, authenticated) => {
     const token = '12345';
-    window.gapi = {
-      signin2: {
-        render: jest.fn(),
-      },
-    };
 
     jest.spyOn(global, 'fetch').mockImplementation(() => ({ status }));
     const wrapper = mount(<Login />);
@@ -36,11 +31,6 @@ describe('Login', () => {
 
   test('call onAuthenticated callback', async () => {
     const token = '12345';
-    window.gapi = {
-      signin2: {
-        render: jest.fn(),
-      },
-    };
     const onAuthenticated = jest.fn();
     onAuthenticated.mockReturnValue(<div>Test</div>);
 

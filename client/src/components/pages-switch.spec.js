@@ -40,11 +40,6 @@ describe('PagesSwitch', () => {
         },
       },
     ];
-    window.gapi = {
-      signin2: {
-        render: jest.fn(),
-      },
-    };
 
     await act(async () => {
       const wrapper = mount(

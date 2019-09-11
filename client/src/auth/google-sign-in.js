@@ -9,14 +9,16 @@ class GoogleSignIn extends Component {
   }
 
   componentDidMount() {
-    window.gapi.signin2.render('g-signin2', {
-      scope: 'profile email',
-      width: 240,
-      height: 50,
-      longtitle: true,
-      theme: 'dark',
-      onsuccess: this.onSignIn,
-    });
+    if (window.gapi && window.gapi.signin2 && window.gapi.signin2.render) {
+      window.gapi.signin2.render('g-signin2', {
+        scope: 'profile email',
+        width: 240,
+        height: 50,
+        longtitle: true,
+        theme: 'dark',
+        onsuccess: this.onSignIn,
+      });
+    }
   }
 
   async onSignIn(googleUser) {
