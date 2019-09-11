@@ -34,12 +34,13 @@ const logger = createLogger({
       format: 'YYYY-MM-DD HH:mm:ss',
     }),
     format.printf(
-      info => `${info.timestamp} ${info.level}: ${info instanceof Error ? JSON.stringify(info.stack) : info.message}`,
+      (info) =>
+        `${info.timestamp} ${info.level}: ${
+          info instanceof Error ? JSON.stringify(info.stack) : info.message
+        }`,
     ),
   ),
-  transports: [
-    new transports.Console(),
-  ],
+  transports: [new transports.Console()],
 });
 
 const session = new Session(createSessionStorage(logger, config));
@@ -48,7 +49,10 @@ const messageRepository = new MessageRepository(pool);
 const accountRepository = new AccountRepository(pool);
 const googleSignInClientId = config.get('google.sign_in.client_id');
 const oAuth2Client = new OAuth2Client(googleSignInClientId);
-const googleSignInClient = new GoogleSignInClient(oAuth2Client, googleSignInClientId);
+const googleSignInClient = new GoogleSignInClient(
+  oAuth2Client,
+  googleSignInClientId,
+);
 
 const contextData = {
   logger,
@@ -89,6 +93,4 @@ server.installSubscriptionHandlers(httpServer);
 app.post('/auth', createAuthHandler(contextData));
 app.post('/logout', createLogoutHandler(contextData));
 
-httpServer.listen({ port: 4000 }, () => (
-  logger.info('🚀 Server ready')
-));
+httpServer.listen({ port: 4000 }, () => logger.info('🚀 Server ready'));

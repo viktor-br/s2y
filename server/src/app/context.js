@@ -1,11 +1,13 @@
 const authenticateUser = require('./authenticate-user');
 
-const createContext = contextData => async ({ req, connection }) => {
+const createContext = (contextData) => async ({ req, connection }) => {
   if (connection) {
     return connection.context;
   }
 
-  const { cookies: { SID: sessionId } } = req;
+  const {
+    cookies: { SID: sessionId },
+  } = req;
 
   const { session } = contextData;
 
