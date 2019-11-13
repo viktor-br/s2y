@@ -7,37 +7,52 @@ class MessageRepository extends Repository {
       [userUUID],
     );
 
-    return messages.map(
-      (message) => {
-        const { uuid, content, created_at: createdAt } = message;
+    return messages.map((message) => {
+      const { uuid, content, created_at: createdAt } = message;
 
-        return {
-          uuid,
-          userUUID,
-          content,
-          createdAt,
-        };
-      },
-    );
+      return {
+        uuid,
+        userUUID,
+        content,
+        createdAt,
+      };
+    });
   }
 
-  async create(
-    {
+  async create({ uuid, userUUID, content, createdAt }) {
+    await this.pool.query('INSERT INTO `message` SET ?', {
+      uuid,
+      user_uuid: userUUID,
+      content,
+      created_at: createdAt,
+    });
+  }
+
+  async findByUUID(messageUUID) {
+    const [[message]] = await this.pool.query(
+      'SELECT * FROM `message` WHERE uuid = ?',
+      [messageUUID],
+    );
+
+    const {
+      uuid,
+      content,
+      created_at: createdAt,
+      user_uuid: userUUID,
+    } = message;
+
+    return {
       uuid,
       userUUID,
       content,
       createdAt,
-    },
-  ) {
-    await this.pool.query(
-      'INSERT INTO `message` SET ?',
-      {
-        uuid,
-        user_uuid: userUUID,
-        content,
-        created_at: createdAt,
-      },
-    );
+    };
+  }
+
+  async deleteByUUID(messageUUID) {
+    return this.pool.query('DELETE FROM `message` WHERE uuid = ?', [
+      messageUUID,
+    ]);
   }
 }
 
