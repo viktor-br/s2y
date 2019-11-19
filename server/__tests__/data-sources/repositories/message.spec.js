@@ -87,4 +87,54 @@ describe('AccountRepository', () => {
       ],
     );
   });
+
+  test('findByUUID', async () => {
+    const messageUUID = 'abc';
+    const queryMock = jest.fn(
+        () => [
+          [
+            {
+              uuid: messageUUID,
+              user_uuid: 'def',
+              content: 'content',
+              created_at: '123456',
+            }
+          ]
+        ]
+    );
+    const pool = {
+      query: queryMock,
+    };
+    const messageRepository = new MessageRepository(pool);
+    const message = await messageRepository.findByUUID(messageUUID);
+
+    expect(queryMock).toHaveBeenCalledWith(
+        'SELECT * FROM `message` WHERE uuid = ?',
+        [messageUUID],
+    );
+
+    expect(message).toEqual(
+      {
+        uuid: messageUUID,
+        userUUID: 'def',
+        content: 'content',
+        createdAt: '123456',
+      },
+    );
+  });
+
+  test('delete', async () => {
+    const messageUUID = 'abc';
+    const queryMock = jest.fn();
+    const pool = {
+      query: queryMock,
+    };
+    const messageRepository = new MessageRepository(pool);
+    await messageRepository.deleteByUUID(messageUUID);
+
+    expect(queryMock).toHaveBeenCalledWith(
+        'DELETE FROM `message` WHERE uuid = ?',
+        [messageUUID],
+    );
+  });
 });
