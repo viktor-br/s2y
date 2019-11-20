@@ -2,7 +2,7 @@ import { Redirect, Switch, Route } from 'react-router-dom';
 import React from 'react';
 import Home from './home';
 import Login from './login';
-import { MessageList } from './message';
+import { MessageView } from './message';
 
 const PagesSwitch = () => (
   <Switch>
@@ -17,7 +17,7 @@ const PagesSwitch = () => (
         />
       )}
     />
-    <Route path="/messages" component={MessageList} />
+    <Route path="/messages" component={MessageView} />
   </Switch>
 );
 

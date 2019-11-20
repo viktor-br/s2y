@@ -5,24 +5,58 @@ import waitForExpect from 'wait-for-expect';
 import { act } from 'react-dom/test-utils';
 import { DeleteForever } from '@material-ui/icons';
 import MessageList from './list';
-import { getMessages, receiveMessage } from '../../gql';
+import { deleteMessage, receiveMessage, removeMessage } from '../../gql';
 
 describe('list component', () => {
-  test('load messages', async () => {
+  test('empty initial message list', async () => {
     const mocks = [
       {
         request: {
-          query: getMessages,
-          variables: {},
+          query: removeMessage,
+        },
+        result: {},
+      },
+      {
+        request: {
+          query: receiveMessage,
         },
         result: {
           data: {
-            getMessages: [
-              { uuid: '111', content: '112', createdAt: '113' },
-              { uuid: '221', content: '222', createdAt: '223' },
-            ],
+            receiveMessage: {
+              uuid: '331',
+              content: '332',
+              createdAt: '333',
+            },
           },
         },
+      },
+    ];
+
+    await act(async () => {
+      const wrapper = await mount(
+        <MockedProvider mocks={mocks} addTypename={false}>
+          <MessageList />
+        </MockedProvider>,
+      );
+
+      await waitForExpect(() => {
+        wrapper.update();
+        expect(wrapper.find('p').length).toEqual(1);
+      });
+    });
+  });
+
+  test('load messages', async () => {
+    const initMessages = [
+      { uuid: '111', content: '112', createdAt: '113' },
+      { uuid: '221', content: '222', createdAt: '223' },
+    ];
+    const mocks = [
+      {
+        request: {
+          query: removeMessage,
+        },
+        result: {},
       },
       {
         request: {
@@ -45,7 +79,54 @@ describe('list component', () => {
 
       const wrapper = await mount(
         <MockedProvider mocks={mocks} addTypename={false}>
-          <MessageList />
+          <MessageList messages={initMessages} />
+        </MockedProvider>,
+      );
+
+      await waitForExpect(() => {
+        wrapper.update();
+        expect(wrapper.find('p').length).toEqual(3);
+      });
+
+      expect(window.HTMLElement.prototype.scrollIntoView).toBeCalled();
+    });
+  });
+
+  test('receive message removed event', async () => {
+    const initMessages = [
+      { uuid: '111', content: '112', createdAt: '113' },
+      { uuid: '221', content: '222', createdAt: '223' },
+      { uuid: '331', content: '332', createdAt: '333' },
+    ];
+    const mocks = [
+      {
+        request: {
+          query: removeMessage,
+        },
+        result: {
+          data: {
+            removeMessage: {
+              uuid: '221',
+              content: '221',
+              createdAt: '223',
+            },
+          },
+        },
+      },
+      {
+        request: {
+          query: receiveMessage,
+        },
+        result: {},
+      },
+    ];
+
+    await act(async () => {
+      window.HTMLElement.prototype.scrollIntoView = jest.fn();
+
+      const wrapper = await mount(
+        <MockedProvider mocks={mocks} addTypename={false}>
+          <MessageList messages={initMessages} />
         </MockedProvider>,
       );
 
@@ -59,103 +140,60 @@ describe('list component', () => {
         ).not.toEqual('Loading...');
       });
 
-      expect(wrapper.find('p').length).toEqual(3);
+      expect(wrapper.find('p').length).toEqual(2);
       expect(window.HTMLElement.prototype.scrollIntoView).toBeCalled();
     });
   });
 
   test('delete message', async () => {
-    const mocks = [
-      {
-        request: {
-          query: getMessages,
-          variables: {},
-        },
-        result: {
-          data: {
-            getMessages: [
-              { uuid: '111', content: '112', createdAt: '113' },
-              { uuid: '221', content: '222', createdAt: '223' },
-            ],
-          },
-        },
-      },
-      {
-        request: {
-          query: receiveMessage,
-        },
-        result: {
-          data: {
-            receiveMessage: {
-              uuid: '331',
-              content: '332',
-              createdAt: '333',
-            },
-          },
-        },
-      },
+    const initMessages = [
+      { uuid: '111', content: '112', createdAt: '113' },
+      { uuid: '221', content: '222', createdAt: '223' },
     ];
-
-    const onDelete = jest.fn();
-
-    await act(async () => {
-      const wrapper = await mount(
-        <MockedProvider mocks={mocks} addTypename={false}>
-          <MessageList onDelete={onDelete} />
-        </MockedProvider>,
-      );
-
-      await waitForExpect(() => {
-        wrapper.update();
-        expect(
-          wrapper
-            .find('p')
-            .at(0)
-            .text(),
-        ).not.toEqual('Loading...');
-      });
-
-      const elements = wrapper.find(DeleteForever);
-      expect(elements).toHaveLength(3);
-      elements.at(0).simulate('click');
-      expect(onDelete).toBeCalled();
-    });
-  });
-
-
-  test('handle error', async () => {
     const mocks = [
       {
         request: {
-          query: getMessages,
-          variables: {},
+          query: removeMessage,
         },
-        error: new Error('something bad happened in query'),
+        result: {},
       },
       {
         request: {
           query: receiveMessage,
         },
-        error: new Error('something bad happened in subscription'),
+        result: {},
+      },
+      {
+        request: {
+          query: deleteMessage,
+          variables: {
+            uuid: '111',
+          },
+        },
+        result: {
+          data: {
+            deleteMessage: { uuid: '111', content: '112', createdAt: '113' },
+          },
+        },
       },
     ];
 
     await act(async () => {
       const wrapper = await mount(
         <MockedProvider mocks={mocks} addTypename={false}>
-          <MessageList />
+          <MessageList messages={initMessages} />
         </MockedProvider>,
       );
 
       await waitForExpect(() => {
         wrapper.update();
-        expect(
-          wrapper
-            .find('p')
-            .at(0)
-            .text(),
-        ).toEqual('ERROR');
+        expect(wrapper.find(DeleteForever)).toHaveLength(2);
       });
+
+      wrapper
+        .find(DeleteForever)
+        .at(0)
+        .simulate('click');
     });
   });
 });

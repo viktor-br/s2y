@@ -6,7 +6,7 @@ import { MockedProvider } from '@apollo/react-testing';
 import { act } from 'react-dom/test-utils';
 import Login from './login';
 import PagesSwitch from './pages-switch';
-import { getMessages, receiveMessage } from '../gql';
+import { getMessages, receiveMessage, removeMessage } from '../gql';
 
 describe('PagesSwitch', () => {
   test('switch', async () => {
@@ -24,6 +24,18 @@ describe('PagesSwitch', () => {
             ],
           },
         },
+      },
+      {
+        request: {
+          query: removeMessage,
+        },
+        result: {},
+      },
+      {
+        request: {
+          query: receiveMessage,
+        },
+        result: {},
       },
       {
         request: {

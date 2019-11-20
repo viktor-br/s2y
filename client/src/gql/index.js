@@ -10,10 +10,30 @@ const receiveMessage = gql`
   }
 `;
 
+const removeMessage = gql`
+  subscription {
+    removeMessage {
+      uuid
+    }
+  }
+`;
+
 const sendMessage = gql`
   mutation SendMessage($content: String!) {
     sendMessage(content: $content) {
+      uuid
       content
+      createdAt
+    }
+  }
+`;
+
+const deleteMessage = gql`
+  mutation DeleteMessage($uuid: String!) {
+    deleteMessage(uuid: $uuid) {
+      uuid
+      content
+      createdAt
     }
   }
 `;
@@ -28,4 +48,10 @@ const getMessages = gql`
   }
 `;
 
-export { receiveMessage, sendMessage, getMessages };
+export {
+  receiveMessage,
+  sendMessage,
+  getMessages,
+  deleteMessage,
+  removeMessage,
+};
