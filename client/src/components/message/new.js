@@ -17,17 +17,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const NewMessage = (props) => {
-  const { onCreate } = props;
+const NewMessage = () => {
   const [message, setMessage] = useState('');
   const [saveMessage, { data }] = useMutation(sendMessage, {
     onCompleted: () => setMessage(''),
   });
   const classes = useStyles();
-
-  if (data && onCreate) {
-    onCreate();
-  }
 
   return (
     <Grid

@@ -10,7 +10,6 @@ import { sendMessage } from '../../gql';
 describe('new message component', () => {
   test('content', async () => {
     const message = 'Message content';
-    const onCreate = jest.fn();
     const mocks = [
       {
         request: {
@@ -22,6 +21,8 @@ describe('new message component', () => {
         result: {
           data: {
             sendMessage: {
+              uuid: '123',
+              createdAt: '12345',
               content: message,
             },
           },
@@ -31,7 +32,7 @@ describe('new message component', () => {
     await act(async () => {
       const wrapper = mount(
         <MockedProvider mocks={mocks} addTypename={false} resolvers={{}}>
-          <NewMessage onCreate={onCreate} />
+          <NewMessage />
         </MockedProvider>,
       );
 
@@ -54,7 +55,7 @@ describe('new message component', () => {
       await sendMessageElements.at(0).simulate('click');
 
       await waitForExpect(() => {
-        expect(onCreate).toHaveBeenCalledTimes(1);
+        expect(wrapper.find('textarea').at(0).text()).toEqual('');
       });
     });
   });

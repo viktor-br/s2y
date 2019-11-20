@@ -30,7 +30,7 @@ const MessageView = () => {
   // TODO what if query failed, but subscription not?!
   if (loading) return <p>Loading...</p>;
   if (error) return <p>ERROR</p>;
-  const { getMessages: messages = [] } = data || {};
+  const { getMessages: messages} = data;
 
   return (
     <Grid

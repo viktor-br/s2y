@@ -17,7 +17,7 @@ const scrollToRef = (ref) => {
   }
 };
 
-const MessageList = ({ messages: initMessages }) => {
+const MessageList = ({ messages: initMessages = [] }) => {
   const messagesEndRef = useRef(null);
   const classes = useStyles();
   const [messages, setMessages] = useState(initMessages);
