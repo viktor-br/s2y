@@ -1,12 +1,12 @@
 const uuidv4 = require('uuid/v4');
 const { ForbiddenError, UserInputError } = require('apollo-server');
-const { Mutation: { sendMessage, deleteMessage } } = require('../../../src/resolvers');
+const { Mutation: { createMessage, deleteMessage } } = require('../../../src/resolvers');
 
 jest.mock('uuid/v4');
 
-describe('sendMessage', () => {
+describe('createMessage', () => {
   test('empty user', async () => {
-    const result = await sendMessage(null, { content: 'test' }, {});
+    const result = await createMessage(null, { content: 'test' }, {});
 
     expect(result).toBeNull();
   });
@@ -38,9 +38,9 @@ describe('sendMessage', () => {
       getCurrentDate,
     };
     uuidv4.mockReturnValueOnce(sessionId);
-    const returnedMessage = await sendMessage(null, { content }, context);
+    const returnedMessage = await createMessage(null, { content }, context);
 
-    expect(pubsubPublishMock).toHaveBeenCalledWith('receiveMessage', { receiveMessage: message });
+    expect(pubsubPublishMock).toHaveBeenCalledWith('messageCreated', { messageCreated: message });
     expect(messageRepositoryCreateMock).toHaveBeenCalledWith(message);
 
     expect(returnedMessage).toEqual(message);
@@ -50,7 +50,7 @@ describe('sendMessage', () => {
 describe('deleteMessage', () => {
   test('success', async () => {
     const id = '123';
-    const userID = '12345';
+    const userID = '2345';
     const sessionId = '5555555';
     const content = 'test';
     const pubsubPublishMock = jest.fn();
@@ -88,7 +88,7 @@ describe('deleteMessage', () => {
 
     expect(messageRepositoryFindByIDMock).toHaveBeenCalledWith(id);
     expect(messageRepositoryDeleteByIDMock).toHaveBeenCalledWith(id);
-    expect(pubsubPublishMock).toHaveBeenCalledWith('removeMessage', { removeMessage: message });
+    expect(pubsubPublishMock).toHaveBeenCalledWith('messageDeleted', { messageDeleted: message });
     expect(returnedMessage).toEqual(message);
   });
 
@@ -100,7 +100,7 @@ describe('deleteMessage', () => {
 
   test('no message', async () => {
     const id = '123';
-    const userID = '12345';
+    const userID = '34567';
     const pubsubPublishMock = jest.fn();
     const pubsub = {
       publish: pubsubPublishMock,
@@ -134,7 +134,7 @@ describe('deleteMessage', () => {
 
   test('message belongs other user', async () => {
     const id = '123';
-    const userID = '12345';
+    const userID = '456789';
     const sessionId = '5555555';
     const content = 'test';
     const pubsubPublishMock = jest.fn();

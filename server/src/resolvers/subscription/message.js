@@ -1,19 +1,19 @@
 const { withFilter } = require('apollo-server');
 
-const receiveMessage = {
+const messageCreated = {
   subscribe: withFilter(
-    (_, __, { pubsub }) => pubsub.asyncIterator('receiveMessage'),
-    ({ receiveMessage: { userID } }, variables, { user: { id } }) =>
+    (_, __, { pubsub }) => pubsub.asyncIterator('messageCreated'),
+    ({ messageCreated: { userID } }, variables, { user: { id } }) =>
       id && userID && id === userID,
   ),
 };
 
-const removeMessage = {
+const messageDeleted = {
   subscribe: withFilter(
-    (_, __, { pubsub }) => pubsub.asyncIterator('removeMessage'),
-    ({ removeMessage: { userID } }, variables, { user: { id } }) =>
+    (_, __, { pubsub }) => pubsub.asyncIterator('messageDeleted'),
+    ({ messageDeleted: { userID } }, variables, { user: { id } }) =>
       id && userID && id === userID,
   ),
 };
 
-module.exports = { receiveMessage, removeMessage };
+module.exports = { messageCreated, messageDeleted };

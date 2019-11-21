@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSubscription, useMutation } from '@apollo/react-hooks';
 import { Grid, makeStyles } from '@material-ui/core';
-import { receiveMessage, deleteMessage, removeMessage } from '../../gql';
+import { SUBSCRIPTION_MESSAGE_CREATED, SUBSCRIPTION_MESSAGE_DELETED, MUTATION_DELETE_MESSAGE } from '../../gql';
 import MessageCard from './card';
 
 const useStyles = makeStyles(() => ({
@@ -21,25 +21,25 @@ const MessageList = ({ messages: initMessages = [] }) => {
   const messagesEndRef = useRef(null);
   const classes = useStyles();
   const [messages, setMessages] = useState(initMessages);
-  useSubscription(removeMessage, {
+  useSubscription(SUBSCRIPTION_MESSAGE_DELETED, {
     onSubscriptionData: ({
       subscriptionData: {
-        data: { removeMessage: removedMessage },
+        data: { messageDeleted: deletedMessage },
       },
     }) =>
       setMessages(
-        messages.filter((message) => message.id !== removedMessage.id),
+        messages.filter((message) => message.id !== deletedMessage.id),
       ),
   });
-  useSubscription(receiveMessage, {
+  useSubscription(SUBSCRIPTION_MESSAGE_CREATED, {
     onSubscriptionData: ({
       subscriptionData: {
-        data: { receiveMessage: receivedMessage },
+        data: { messageCreated: createdMessage },
       },
-    }) => setMessages([...messages, receivedMessage]),
+    }) => setMessages([...messages, createdMessage]),
   });
 
-  const [deleteMessageHandler] = useMutation(deleteMessage);
+  const [deleteMessageHandler] = useMutation(MUTATION_DELETE_MESSAGE);
 
   const onDelete = ({ id }) => deleteMessageHandler({ variables: { id } });
 

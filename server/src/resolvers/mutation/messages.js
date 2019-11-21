@@ -1,7 +1,7 @@
 const uuidv4 = require('uuid/v4');
 const { ForbiddenError, UserInputError } = require('apollo-server');
 
-const sendMessage = async (
+const createMessage = async (
   root,
   { content },
   { user, pubsub, messageRepository, getCurrentDate },
@@ -18,8 +18,8 @@ const sendMessage = async (
     createdAt: getCurrentDate(),
     content,
   };
-  pubsub.publish('receiveMessage', {
-    receiveMessage: message,
+  pubsub.publish('messageCreated', {
+    messageCreated: message,
   });
 
   messageRepository.create(message);
@@ -50,9 +50,9 @@ const deleteMessage = async (
 
   await messageRepository.deleteByID(id);
 
-  pubsub.publish('removeMessage', { removeMessage: message });
+  pubsub.publish('messageDeleted', { messageDeleted: message });
 
   return message;
 };
 
-module.exports = { sendMessage, deleteMessage };
+module.exports = { createMessage, deleteMessage };

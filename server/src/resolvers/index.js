@@ -1,17 +1,17 @@
 const getMessages = require('./query/messages');
-const { sendMessage, deleteMessage } = require('./mutation/messages');
-const { receiveMessage, removeMessage } = require('./subscription/message');
+const { createMessage, deleteMessage } = require('./mutation/messages');
+const { messageCreated, messageDeleted } = require('./subscription/message');
 
 module.exports = {
   Query: {
     getMessages,
   },
   Mutation: {
-    sendMessage,
+    createMessage,
     deleteMessage,
   },
   Subscription: {
-    receiveMessage,
-    removeMessage,
+    messageCreated,
+    messageDeleted,
   },
 };

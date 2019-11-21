@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { Grid, makeStyles } from '@material-ui/core';
-import { getMessages } from '../../gql';
+import { QUERY_GET_MESSAGES } from '../../gql';
 import NewMessage from './new';
 import MessageList from './list';
 
@@ -25,9 +25,8 @@ const useStyles = makeStyles(() => ({
 
 const MessageView = () => {
   const classes = useStyles();
-  const { data, loading, error } = useQuery(getMessages);
+  const { data, loading, error } = useQuery(QUERY_GET_MESSAGES);
 
-  // TODO what if query failed, but subscription not?!
   if (loading) return <p>Loading...</p>;
   if (error) return <p>ERROR</p>;
   const { getMessages: messages} = data;

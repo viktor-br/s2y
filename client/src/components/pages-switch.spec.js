@@ -6,14 +6,18 @@ import { MockedProvider } from '@apollo/react-testing';
 import { act } from 'react-dom/test-utils';
 import Login from './login';
 import PagesSwitch from './pages-switch';
-import { getMessages, receiveMessage, removeMessage } from '../gql';
+import {
+  QUERY_GET_MESSAGES,
+  SUBSCRIPTION_MESSAGE_CREATED,
+  SUBSCRIPTION_MESSAGE_DELETED,
+} from '../gql';
 
 describe('PagesSwitch', () => {
   test('switch', async () => {
     const mocks = [
       {
         request: {
-          query: getMessages,
+          query: QUERY_GET_MESSAGES,
           variables: {},
         },
         result: {
@@ -27,23 +31,23 @@ describe('PagesSwitch', () => {
       },
       {
         request: {
-          query: removeMessage,
+          query: SUBSCRIPTION_MESSAGE_DELETED,
         },
         result: {},
       },
       {
         request: {
-          query: receiveMessage,
+          query: SUBSCRIPTION_MESSAGE_CREATED,
         },
         result: {},
       },
       {
         request: {
-          query: receiveMessage,
+          query: SUBSCRIPTION_MESSAGE_CREATED,
         },
         result: {
           data: {
-            receiveMessage: {
+            messageCreated: {
               id: '331',
               content: '332',
               createdAt: '333',

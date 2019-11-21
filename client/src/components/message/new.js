@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Grid, makeStyles, TextField, Fab } from '@material-ui/core';
 import { Send } from '@material-ui/icons';
 import { useMutation } from '@apollo/react-hooks';
-import { sendMessage } from '../../gql';
+import { MUTATION_CREATE_MESSAGE } from '../../gql';
 
 const useStyles = makeStyles(() => ({
   createMessage: {
@@ -19,7 +19,7 @@ const useStyles = makeStyles(() => ({
 
 const NewMessage = () => {
   const [message, setMessage] = useState('');
-  const [saveMessage, { data }] = useMutation(sendMessage, {
+  const [saveMessage] = useMutation(MUTATION_CREATE_MESSAGE, {
     onCompleted: () => setMessage(''),
   });
   const classes = useStyles();

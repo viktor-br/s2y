@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
-const receiveMessage = gql`
+const SUBSCRIPTION_MESSAGE_CREATED = gql`
   subscription {
-    receiveMessage {
+    messageCreated {
       id
       content
       createdAt
@@ -10,17 +10,17 @@ const receiveMessage = gql`
   }
 `;
 
-const removeMessage = gql`
+const SUBSCRIPTION_MESSAGE_DELETED = gql`
   subscription {
-    removeMessage {
+    messageDeleted {
       id
     }
   }
 `;
 
-const sendMessage = gql`
-  mutation SendMessage($content: String!) {
-    sendMessage(content: $content) {
+const MUTATION_CREATE_MESSAGE = gql`
+  mutation CreateMessage($content: String!) {
+    createMessage(content: $content) {
       id
       content
       createdAt
@@ -28,7 +28,7 @@ const sendMessage = gql`
   }
 `;
 
-const deleteMessage = gql`
+const MUTATION_DELETE_MESSAGE = gql`
   mutation DeleteMessage($id: String!) {
     deleteMessage(id: $id) {
       id
@@ -38,7 +38,7 @@ const deleteMessage = gql`
   }
 `;
 
-const getMessages = gql`
+const QUERY_GET_MESSAGES = gql`
   query {
     getMessages {
       id
@@ -49,9 +49,9 @@ const getMessages = gql`
 `;
 
 export {
-  receiveMessage,
-  sendMessage,
-  getMessages,
-  deleteMessage,
-  removeMessage,
+  SUBSCRIPTION_MESSAGE_CREATED,
+  MUTATION_CREATE_MESSAGE,
+  QUERY_GET_MESSAGES,
+  MUTATION_DELETE_MESSAGE,
+  SUBSCRIPTION_MESSAGE_DELETED,
 };

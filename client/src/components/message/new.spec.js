@@ -5,7 +5,7 @@ import waitForExpect from 'wait-for-expect';
 import { act } from 'react-dom/test-utils';
 import { TextField, Fab } from '@material-ui/core';
 import NewMessage from './new';
-import { sendMessage } from '../../gql';
+import { MUTATION_CREATE_MESSAGE } from '../../gql';
 
 describe('new message component', () => {
   test('content', async () => {
@@ -13,14 +13,14 @@ describe('new message component', () => {
     const mocks = [
       {
         request: {
-          query: sendMessage,
+          query: MUTATION_CREATE_MESSAGE,
           variables: {
             content: message,
           },
         },
         result: {
           data: {
-            sendMessage: {
+            createMessage: {
               id: '123',
               createdAt: '12345',
               content: message,
@@ -50,9 +50,9 @@ describe('new message component', () => {
         expect(wrapper.find('textarea').at(0).text()).toEqual(message);
       });
 
-      const sendMessageElements = wrapper.find(Fab);
-      expect(sendMessageElements).toHaveLength(1);
-      await sendMessageElements.at(0).simulate('click');
+      const createMessageElements = wrapper.find(Fab);
+      expect(createMessageElements).toHaveLength(1);
+      await createMessageElements.at(0).simulate('click');
 
       await waitForExpect(() => {
         expect(wrapper.find('textarea').at(0).text()).toEqual('');

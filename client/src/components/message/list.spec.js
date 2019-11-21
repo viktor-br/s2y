@@ -5,24 +5,24 @@ import waitForExpect from 'wait-for-expect';
 import { act } from 'react-dom/test-utils';
 import { DeleteForever } from '@material-ui/icons';
 import MessageList from './list';
-import { deleteMessage, receiveMessage, removeMessage } from '../../gql';
+import { SUBSCRIPTION_MESSAGE_DELETED, SUBSCRIPTION_MESSAGE_CREATED, MUTATION_DELETE_MESSAGE } from '../../gql';
 
 describe('list component', () => {
   test('empty initial message list', async () => {
     const mocks = [
       {
         request: {
-          query: removeMessage,
+          query: SUBSCRIPTION_MESSAGE_DELETED,
         },
         result: {},
       },
       {
         request: {
-          query: receiveMessage,
+          query: SUBSCRIPTION_MESSAGE_CREATED,
         },
         result: {
           data: {
-            receiveMessage: {
+            messageCreated: {
               id: '331',
               content: '332',
               createdAt: '333',
@@ -54,17 +54,17 @@ describe('list component', () => {
     const mocks = [
       {
         request: {
-          query: removeMessage,
+          query: SUBSCRIPTION_MESSAGE_DELETED,
         },
         result: {},
       },
       {
         request: {
-          query: receiveMessage,
+          query: SUBSCRIPTION_MESSAGE_CREATED,
         },
         result: {
           data: {
-            receiveMessage: {
+            messageCreated: {
               id: '331',
               content: '332',
               createdAt: '333',
@@ -101,11 +101,11 @@ describe('list component', () => {
     const mocks = [
       {
         request: {
-          query: removeMessage,
+          query: SUBSCRIPTION_MESSAGE_DELETED,
         },
         result: {
           data: {
-            removeMessage: {
+            messageDeleted: {
               id: '221',
               content: '221',
               createdAt: '223',
@@ -115,7 +115,7 @@ describe('list component', () => {
       },
       {
         request: {
-          query: receiveMessage,
+          query: SUBSCRIPTION_MESSAGE_CREATED,
         },
         result: {},
       },
@@ -153,19 +153,19 @@ describe('list component', () => {
     const mocks = [
       {
         request: {
-          query: removeMessage,
+          query: SUBSCRIPTION_MESSAGE_DELETED,
         },
         result: {},
       },
       {
         request: {
-          query: receiveMessage,
+          query: SUBSCRIPTION_MESSAGE_CREATED,
         },
         result: {},
       },
       {
         request: {
-          query: deleteMessage,
+          query: MUTATION_DELETE_MESSAGE,
           variables: {
             id: '111',
           },
