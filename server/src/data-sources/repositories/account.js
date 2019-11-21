@@ -17,14 +17,14 @@ class AccountRepository extends Repository {
     }
 
     const {
-      uuid,
+      id,
       name,
       picture,
       created_at: createdAt,
     } = rows[0];
 
     return {
-      uuid,
+      id,
       authProvider,
       externalId,
       name,
@@ -49,12 +49,12 @@ class AccountRepository extends Repository {
       return account;
     }
 
-    const uuid = uuidv4();
+    const id = uuidv4();
 
     await this.pool.query(
       'INSERT INTO `account` SET ?',
       {
-        uuid,
+        id,
         auth_provider: authProvider,
         external_id: externalId,
         name,
@@ -64,7 +64,7 @@ class AccountRepository extends Repository {
     );
 
     return {
-      uuid,
+      id,
       authProvider,
       externalId,
       name,

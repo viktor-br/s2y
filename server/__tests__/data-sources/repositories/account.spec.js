@@ -31,7 +31,7 @@ describe('AccountRepository', () => {
   });
 
   test('findByAuthProviderAndExternalId success', async () => {
-    const uuid = '12345';
+    const id = '12345';
     const authProvider = 'google';
     const externalId = '123456';
     const name = 'John Dow';
@@ -40,7 +40,7 @@ describe('AccountRepository', () => {
       () => [
         [
           {
-            uuid,
+            id,
             external_id: externalId,
             auth_provider: authProvider,
             name,
@@ -63,7 +63,7 @@ describe('AccountRepository', () => {
 
     expect(returnedAccount).toEqual(
       {
-        uuid,
+        id,
         externalId,
         authProvider,
         name,
@@ -72,7 +72,7 @@ describe('AccountRepository', () => {
   });
 
   test('createOrGetExisting account exists', async () => {
-    const uuid = '12345';
+    const id = '12345';
     const authProvider = 'google';
     const externalId = '123456';
     const name = 'John Dow';
@@ -81,7 +81,7 @@ describe('AccountRepository', () => {
       () => [
         [
           {
-            uuid,
+            id,
             external_id: externalId,
             auth_provider: authProvider,
             name,
@@ -110,7 +110,7 @@ describe('AccountRepository', () => {
 
     expect(returnedAccount).toEqual(
       {
-        uuid,
+        id,
         externalId,
         authProvider,
         name,
@@ -119,12 +119,12 @@ describe('AccountRepository', () => {
   });
 
   test('createOrGetExisting create new account', async () => {
-    const uuid = '12345';
+    const id = '12345';
     const authProvider = 'google';
     const externalId = '123456';
     const name = 'John Dow';
 
-    uuidv4.mockReturnValueOnce(uuid);
+    uuidv4.mockReturnValueOnce(id);
 
     const queryMock = jest.fn();
     queryMock.mockReturnValue([]);
@@ -147,7 +147,7 @@ describe('AccountRepository', () => {
     expect(queryMock.mock.calls[1][0]).toBe('INSERT INTO `account` SET ?');
     expect(queryMock.mock.calls[1][1]).toEqual(
       {
-        uuid,
+        id,
         auth_provider: authProvider,
         external_id: externalId,
         name,
@@ -156,7 +156,7 @@ describe('AccountRepository', () => {
 
     expect(returnedAccount).toEqual(
       {
-        uuid,
+        id,
         externalId,
         authProvider,
         name,

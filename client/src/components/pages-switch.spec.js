@@ -19,8 +19,8 @@ describe('PagesSwitch', () => {
         result: {
           data: {
             getMessages: [
-              { uuid: '111', content: '112', createdAt: '113' },
-              { uuid: '221', content: '222', createdAt: '223' },
+              { id: '111', content: '112', createdAt: '113' },
+              { id: '221', content: '222', createdAt: '223' },
             ],
           },
         },
@@ -44,7 +44,7 @@ describe('PagesSwitch', () => {
         result: {
           data: {
             receiveMessage: {
-              uuid: '331',
+              id: '331',
               content: '332',
               createdAt: '333',
             },

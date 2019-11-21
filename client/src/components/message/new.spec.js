@@ -21,7 +21,7 @@ describe('new message component', () => {
         result: {
           data: {
             sendMessage: {
-              uuid: '123',
+              id: '123',
               createdAt: '12345',
               content: message,
             },

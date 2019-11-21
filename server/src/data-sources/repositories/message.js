@@ -1,57 +1,57 @@
 const Repository = require('./repository');
 
 class MessageRepository extends Repository {
-  async findByUserUUID(userUUID) {
+  async findByUserID(userID) {
     const [messages] = await this.pool.query(
-      'SELECT * FROM `message` WHERE user_uuid = ? ORDER BY `created_at` ASC LIMIT 20',
-      [userUUID],
+      'SELECT * FROM `message` WHERE user_id = ? ORDER BY `created_at` ASC LIMIT 20',
+      [userID],
     );
 
     return messages.map((message) => {
-      const { uuid, content, created_at: createdAt } = message;
+      const { id, content, created_at: createdAt } = message;
 
       return {
-        uuid,
-        userUUID,
+        id,
+        userID,
         content,
         createdAt,
       };
     });
   }
 
-  async create({ uuid, userUUID, content, createdAt }) {
+  async create({ id, userID, content, createdAt }) {
     await this.pool.query('INSERT INTO `message` SET ?', {
-      uuid,
-      user_uuid: userUUID,
+      id,
+      user_id: userID,
       content,
       created_at: createdAt,
     });
   }
 
-  async findByUUID(messageUUID) {
+  async findByID(messageID) {
     const [[message]] = await this.pool.query(
-      'SELECT * FROM `message` WHERE uuid = ?',
-      [messageUUID],
+      'SELECT * FROM `message` WHERE id = ?',
+      [messageID],
     );
 
     const {
-      uuid,
+      id,
       content,
       created_at: createdAt,
-      user_uuid: userUUID,
+      user_id: userID,
     } = message;
 
     return {
-      uuid,
-      userUUID,
+      id,
+      userID,
       content,
       createdAt,
     };
   }
 
-  async deleteByUUID(messageUUID) {
-    return this.pool.query('DELETE FROM `message` WHERE uuid = ?', [
-      messageUUID,
+  async deleteByID(messageID) {
+    return this.pool.query('DELETE FROM `message` WHERE id = ?', [
+      messageID,
     ]);
   }
 }

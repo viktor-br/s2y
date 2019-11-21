@@ -10,11 +10,11 @@ const sendMessage = async (
     return null;
   }
 
-  const { uuid: userUUID } = user;
+  const { id: userID } = user;
 
   const message = {
-    uuid: uuidv4(),
-    userUUID,
+    id: uuidv4(),
+    userID,
     createdAt: getCurrentDate(),
     content,
   };
@@ -29,26 +29,26 @@ const sendMessage = async (
 
 const deleteMessage = async (
   root,
-  { uuid },
+  { id },
   { user, pubsub, messageRepository },
 ) => {
   if (!user) {
     return null;
   }
 
-  const { uuid: userUUID } = user;
+  const { id: userID } = user;
 
-  const message = await messageRepository.findByUUID(uuid);
+  const message = await messageRepository.findByID(id);
 
   if (!message) {
     throw new UserInputError('Message does not exist');
   }
 
-  if (message.userUUID !== userUUID) {
+  if (message.userID !== userID) {
     throw new ForbiddenError('Access forbidden');
   }
 
-  await messageRepository.deleteByUUID(uuid);
+  await messageRepository.deleteByID(id);
 
   pubsub.publish('removeMessage', { removeMessage: message });
 

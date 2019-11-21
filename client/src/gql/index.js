@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 const receiveMessage = gql`
   subscription {
     receiveMessage {
-      uuid
+      id
       content
       createdAt
     }
@@ -13,7 +13,7 @@ const receiveMessage = gql`
 const removeMessage = gql`
   subscription {
     removeMessage {
-      uuid
+      id
     }
   }
 `;
@@ -21,7 +21,7 @@ const removeMessage = gql`
 const sendMessage = gql`
   mutation SendMessage($content: String!) {
     sendMessage(content: $content) {
-      uuid
+      id
       content
       createdAt
     }
@@ -29,9 +29,9 @@ const sendMessage = gql`
 `;
 
 const deleteMessage = gql`
-  mutation DeleteMessage($uuid: String!) {
-    deleteMessage(uuid: $uuid) {
-      uuid
+  mutation DeleteMessage($id: String!) {
+    deleteMessage(id: $id) {
+      id
       content
       createdAt
     }
@@ -41,7 +41,7 @@ const deleteMessage = gql`
 const getMessages = gql`
   query {
     getMessages {
-      uuid
+      id
       content
       createdAt
     }

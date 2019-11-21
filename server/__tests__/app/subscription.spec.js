@@ -2,11 +2,11 @@ const { createSubscriptionOnConnectHandler } = require('../../src/app');
 
 describe('createSubscriptionOnConnectHandler', () => {
   test('success call', async () => {
-    const userUUID = '56789';
+    const userID = '56789';
     const sessionId = '12345';
-    const user = { uuid: userUUID };
+    const user = { id: userID };
     const session = {
-      get: () => userUUID,
+      get: () => userID,
     };
     const defaultContext = {
       session,

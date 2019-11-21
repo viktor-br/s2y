@@ -28,7 +28,7 @@ const MessageList = ({ messages: initMessages = [] }) => {
       },
     }) =>
       setMessages(
-        messages.filter((message) => message.uuid !== removedMessage.uuid),
+        messages.filter((message) => message.id !== removedMessage.id),
       ),
   });
   useSubscription(receiveMessage, {
@@ -41,14 +41,14 @@ const MessageList = ({ messages: initMessages = [] }) => {
 
   const [deleteMessageHandler] = useMutation(deleteMessage);
 
-  const onDelete = ({ uuid }) => deleteMessageHandler({ variables: { uuid } });
+  const onDelete = ({ id }) => deleteMessageHandler({ variables: { id } });
 
   useEffect(() => scrollToRef(messagesEndRef));
 
   return (
     <Grid container direction="column">
       {messages.map((item) => (
-        <Grid item key={item.uuid} className={classes.message}>
+        <Grid item key={item.id} className={classes.message}>
           <MessageCard item={item} onDelete={onDelete} />
         </Grid>
       ))}

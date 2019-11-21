@@ -28,9 +28,7 @@ function CreateApiClient() {
 
   return new ApolloClient({
     link,
-    cache: new InMemoryCache({
-      dataIdFromObject: (object) => object.uuid || null,
-    }),
+    cache: new InMemoryCache(),
   });
 }
 

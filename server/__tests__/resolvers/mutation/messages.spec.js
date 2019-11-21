@@ -12,7 +12,7 @@ describe('sendMessage', () => {
   });
 
   test('success', async () => {
-    const userUUID = '12345';
+    const userID = '12345';
     const sessionId = '5555555';
     const content = 'test';
     const pubsubPublishMock = jest.fn();
@@ -26,13 +26,13 @@ describe('sendMessage', () => {
     const currentDate = new Date(Date.now());
     const getCurrentDate = () => currentDate;
     const message = {
-      uuid: sessionId,
-      userUUID,
+      id: sessionId,
+      userID,
       createdAt: currentDate,
       content,
     };
     const context = {
-      user: { uuid: userUUID },
+      user: { id: userID },
       pubsub,
       messageRepository,
       getCurrentDate,
@@ -49,8 +49,8 @@ describe('sendMessage', () => {
 
 describe('deleteMessage', () => {
   test('success', async () => {
-    const uuid = '123';
-    const userUUID = '12345';
+    const id = '123';
+    const userID = '12345';
     const sessionId = '5555555';
     const content = 'test';
     const pubsubPublishMock = jest.fn();
@@ -62,45 +62,45 @@ describe('deleteMessage', () => {
     const getCurrentDate = () => currentDate;
 
     const message = {
-      uuid: sessionId,
-      userUUID,
+      id: sessionId,
+      userID,
       createdAt: currentDate,
       content,
     };
 
-    const messageRepositoryFindByUUIDMock = jest.fn(
+    const messageRepositoryFindByIDMock = jest.fn(
         () => message
     );
-    const messageRepositoryDeleteByUUIDMock = jest.fn();
+    const messageRepositoryDeleteByIDMock = jest.fn();
     const messageRepository = {
-      findByUUID: messageRepositoryFindByUUIDMock,
-      deleteByUUID: messageRepositoryDeleteByUUIDMock,
+      findByID: messageRepositoryFindByIDMock,
+      deleteByID: messageRepositoryDeleteByIDMock,
     };
 
     const context = {
-      user: { uuid: userUUID },
+      user: { id: userID },
       pubsub,
       messageRepository,
       getCurrentDate,
     };
 
-    const returnedMessage = await deleteMessage(null, { uuid }, context);
+    const returnedMessage = await deleteMessage(null, { id }, context);
 
-    expect(messageRepositoryFindByUUIDMock).toHaveBeenCalledWith(uuid);
-    expect(messageRepositoryDeleteByUUIDMock).toHaveBeenCalledWith(uuid);
+    expect(messageRepositoryFindByIDMock).toHaveBeenCalledWith(id);
+    expect(messageRepositoryDeleteByIDMock).toHaveBeenCalledWith(id);
     expect(pubsubPublishMock).toHaveBeenCalledWith('removeMessage', { removeMessage: message });
     expect(returnedMessage).toEqual(message);
   });
 
   test('empty user', async () => {
-    const result = await deleteMessage(null, { uuid: '123' }, {});
+    const result = await deleteMessage(null, { id: '123' }, {});
 
     expect(result).toBeNull();
   });
 
   test('no message', async () => {
-    const uuid = '123';
-    const userUUID = '12345';
+    const id = '123';
+    const userID = '12345';
     const pubsubPublishMock = jest.fn();
     const pubsub = {
       publish: pubsubPublishMock,
@@ -109,32 +109,32 @@ describe('deleteMessage', () => {
     const currentDate = new Date(Date.now());
     const getCurrentDate = () => currentDate;
 
-    const messageRepositoryFindByUUIDMock = jest.fn(
+    const messageRepositoryFindByIDMock = jest.fn(
         () => null
     );
-    const messageRepositoryDeleteByUUIDMock = jest.fn();
+    const messageRepositoryDeleteByIDMock = jest.fn();
     const messageRepository = {
-      findByUUID: messageRepositoryFindByUUIDMock,
-      deleteByUUID: messageRepositoryDeleteByUUIDMock,
+      findByID: messageRepositoryFindByIDMock,
+      deleteByID: messageRepositoryDeleteByIDMock,
     };
 
     const context = {
-      user: { uuid: userUUID },
+      user: { id: userID },
       pubsub,
       messageRepository,
       getCurrentDate,
     };
 
-    await expect(deleteMessage(null, {uuid}, context)).rejects.toThrow(UserInputError);
+    await expect(deleteMessage(null, {id}, context)).rejects.toThrow(UserInputError);
 
-    expect(messageRepositoryFindByUUIDMock).toHaveBeenCalledWith(uuid);
-    expect(messageRepositoryDeleteByUUIDMock).not.toHaveBeenCalled();
+    expect(messageRepositoryFindByIDMock).toHaveBeenCalledWith(id);
+    expect(messageRepositoryDeleteByIDMock).not.toHaveBeenCalled();
     expect(pubsubPublishMock).not.toHaveBeenCalled();
   });
 
   test('message belongs other user', async () => {
-    const uuid = '123';
-    const userUUID = '12345';
+    const id = '123';
+    const userID = '12345';
     const sessionId = '5555555';
     const content = 'test';
     const pubsubPublishMock = jest.fn();
@@ -146,32 +146,32 @@ describe('deleteMessage', () => {
     const getCurrentDate = () => currentDate;
 
     const message = {
-      uuid: sessionId,
-      userUUID: 'other user',
+      id: sessionId,
+      userID: 'other user',
       createdAt: currentDate,
       content,
     };
 
-    const messageRepositoryFindByUUIDMock = jest.fn(
+    const messageRepositoryFindByIDMock = jest.fn(
         () => message
     );
-    const messageRepositoryDeleteByUUIDMock = jest.fn();
+    const messageRepositoryDeleteByIDMock = jest.fn();
     const messageRepository = {
-      findByUUID: messageRepositoryFindByUUIDMock,
-      deleteByUUID: messageRepositoryDeleteByUUIDMock,
+      findByID: messageRepositoryFindByIDMock,
+      deleteByID: messageRepositoryDeleteByIDMock,
     };
 
     const context = {
-      user: { uuid: userUUID },
+      user: { id: userID },
       pubsub,
       messageRepository,
       getCurrentDate,
     };
 
-    await expect(deleteMessage(null, {uuid}, context)).rejects.toThrow(ForbiddenError);
+    await expect(deleteMessage(null, {id}, context)).rejects.toThrow(ForbiddenError);
 
-    expect(messageRepositoryFindByUUIDMock).toHaveBeenCalledWith(uuid);
-    expect(messageRepositoryDeleteByUUIDMock).not.toHaveBeenCalled();
+    expect(messageRepositoryFindByIDMock).toHaveBeenCalledWith(id);
+    expect(messageRepositoryDeleteByIDMock).not.toHaveBeenCalled();
     expect(pubsubPublishMock).not.toHaveBeenCalled();
   });
 });

@@ -23,7 +23,7 @@ describe('list component', () => {
         result: {
           data: {
             receiveMessage: {
-              uuid: '331',
+              id: '331',
               content: '332',
               createdAt: '333',
             },
@@ -48,8 +48,8 @@ describe('list component', () => {
 
   test('load messages', async () => {
     const initMessages = [
-      { uuid: '111', content: '112', createdAt: '113' },
-      { uuid: '221', content: '222', createdAt: '223' },
+      { id: '111', content: '112', createdAt: '113' },
+      { id: '221', content: '222', createdAt: '223' },
     ];
     const mocks = [
       {
@@ -65,7 +65,7 @@ describe('list component', () => {
         result: {
           data: {
             receiveMessage: {
-              uuid: '331',
+              id: '331',
               content: '332',
               createdAt: '333',
             },
@@ -94,9 +94,9 @@ describe('list component', () => {
 
   test('receive message removed event', async () => {
     const initMessages = [
-      { uuid: '111', content: '112', createdAt: '113' },
-      { uuid: '221', content: '222', createdAt: '223' },
-      { uuid: '331', content: '332', createdAt: '333' },
+      { id: '111', content: '112', createdAt: '113' },
+      { id: '221', content: '222', createdAt: '223' },
+      { id: '331', content: '332', createdAt: '333' },
     ];
     const mocks = [
       {
@@ -106,7 +106,7 @@ describe('list component', () => {
         result: {
           data: {
             removeMessage: {
-              uuid: '221',
+              id: '221',
               content: '221',
               createdAt: '223',
             },
@@ -147,8 +147,8 @@ describe('list component', () => {
 
   test('delete message', async () => {
     const initMessages = [
-      { uuid: '111', content: '112', createdAt: '113' },
-      { uuid: '221', content: '222', createdAt: '223' },
+      { id: '111', content: '112', createdAt: '113' },
+      { id: '221', content: '222', createdAt: '223' },
     ];
     const mocks = [
       {
@@ -167,12 +167,12 @@ describe('list component', () => {
         request: {
           query: deleteMessage,
           variables: {
-            uuid: '111',
+            id: '111',
           },
         },
         result: {
           data: {
-            deleteMessage: { uuid: '111', content: '112', createdAt: '113' },
+            deleteMessage: { id: '111', content: '112', createdAt: '113' },
           },
         },
       },

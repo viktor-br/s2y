@@ -39,7 +39,7 @@ const createAuthHandler = ({
 
   const authProvider = 'google';
 
-  const { uuid: userUUID } = await accountRepository.createOrGetExisting({
+  const { id: userID } = await accountRepository.createOrGetExisting({
     externalId,
     name,
     authProvider,
@@ -57,7 +57,7 @@ const createAuthHandler = ({
   }
 
   const expirationDate = getCurrentDate() / 1000 + 86400;
-  const newSessionId = await session.createForUser(userUUID, expirationDate);
+  const newSessionId = await session.createForUser(userID, expirationDate);
 
   res.cookie('SID', newSessionId, {
     maxAge: 86400000,
