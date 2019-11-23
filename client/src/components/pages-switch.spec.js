@@ -13,7 +13,7 @@ import {
 } from '../gql';
 
 describe('PagesSwitch', () => {
-  test('switch', async () => {
+  test.each(['/login', '/messages'])('open login page', async (initPath) => {
     const mocks = [
       {
         request: {
@@ -60,7 +60,7 @@ describe('PagesSwitch', () => {
     await act(async () => {
       const wrapper = mount(
         <MockedProvider mocks={mocks} addTypename={false}>
-          <MemoryRouter initialEntries={['/login']}>
+          <MemoryRouter initialEntries={[initPath]}>
             <PagesSwitch />
           </MemoryRouter>
         </MockedProvider>,
@@ -68,7 +68,10 @@ describe('PagesSwitch', () => {
 
       jest.spyOn(global, 'fetch').mockImplementation(() => ({ status: 204 }));
 
-      expect(wrapper.find('Route').prop('location').pathname).toEqual('/login');
+      await waitForExpect(() => {
+        wrapper.update();
+        expect(wrapper.find('Route').prop('location').pathname).toEqual('/login');
+      });
 
       wrapper
         .find(Login)
