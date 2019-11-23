@@ -48,10 +48,19 @@ const QUERY_GET_MESSAGES = gql`
   }
 `;
 
+const QUERY_MY_PROFILE = gql`
+  query {
+    myProfile {
+      id
+    }
+  }
+`;
+
 export {
   SUBSCRIPTION_MESSAGE_CREATED,
   MUTATION_CREATE_MESSAGE,
   QUERY_GET_MESSAGES,
   MUTATION_DELETE_MESSAGE,
   SUBSCRIPTION_MESSAGE_DELETED,
+  QUERY_MY_PROFILE,
 };

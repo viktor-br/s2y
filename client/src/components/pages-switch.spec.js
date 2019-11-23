@@ -13,7 +13,7 @@ import {
 } from '../gql';
 
 describe('PagesSwitch', () => {
-  test.each(['/login', '/messages'])('open login page', async (initPath) => {
+  test('open login page', async () => {
     const mocks = [
       {
         request: {
@@ -60,7 +60,7 @@ describe('PagesSwitch', () => {
     await act(async () => {
       const wrapper = mount(
         <MockedProvider mocks={mocks} addTypename={false}>
-          <MemoryRouter initialEntries={[initPath]}>
+          <MemoryRouter initialEntries={['/login']}>
             <PagesSwitch />
           </MemoryRouter>
         </MockedProvider>,
@@ -83,7 +83,38 @@ describe('PagesSwitch', () => {
       await waitForExpect(() => {
         wrapper.update();
         expect(wrapper.find('Route').prop('location').pathname).toEqual(
-          '/messages/',
+          '/messages',
+        );
+      });
+    });
+  });
+
+  test('open message page without authentication', async () => {
+    const mocks = [
+      {
+        request: {
+          query: QUERY_GET_MESSAGES,
+          variables: {},
+        },
+        result: {
+          error: new Error('Authentication failed'),
+        },
+      },
+    ];
+
+    await act(async () => {
+      const wrapper = mount(
+        <MockedProvider mocks={mocks} addTypename={false}>
+          <MemoryRouter initialEntries={['/messages']}>
+            <PagesSwitch />
+          </MemoryRouter>
+        </MockedProvider>,
+      );
+
+      await waitForExpect(() => {
+        wrapper.update();
+        expect(wrapper.find('Route').prop('location').pathname).toEqual(
+          '/login',
         );
       });
     });

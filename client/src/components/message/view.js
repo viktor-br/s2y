@@ -23,12 +23,17 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const MessageView = () => {
+const MessageView = (props) => {
   const classes = useStyles();
   const { data, loading, error } = useQuery(QUERY_GET_MESSAGES);
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>ERROR</p>;
+  if (error) {
+    if (props.onApiError) {
+      return props.onApiError(error);
+    }
+    return <p>ERROR</p>;
+  }
   const { getMessages: messages} = data;
 
   return (
