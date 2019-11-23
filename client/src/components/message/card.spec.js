@@ -7,20 +7,24 @@ import Card from './card';
 describe('card component', () => {
   test('check card content', () => {
     const content = '1234';
-    const date = 'September 14, 2016';
-    const item = { content, date };
+    const createdAt = 1574517910000;
+    const item = { content, createdAt };
     const wrapper = mount(<Card item={item} />);
 
-    expect(wrapper.find(CardHeader).text()).toMatch(date);
+    expect(wrapper.find(CardHeader).text()).toMatch(
+      new Date(createdAt).toLocaleString(),
+    );
     expect(wrapper.find(CardContent).text()).toMatch(content);
   });
 
   test('card deletion call', () => {
     const content = '1234';
-    const date = 'September 14, 2016';
-    const item = { content, date };
+    const createdAt = '';
+    const item = { content, createdAt };
     const onDelete = jest.fn();
     const wrapper = mount(<Card item={item} onDelete={onDelete} />);
+
+    expect(wrapper.find(CardHeader).text()).toMatch('');
 
     const deleteElements = wrapper.find(DeleteForever);
     expect(deleteElements).toHaveLength(1);

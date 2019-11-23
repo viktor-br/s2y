@@ -70,7 +70,9 @@ describe('PagesSwitch', () => {
 
       await waitForExpect(() => {
         wrapper.update();
-        expect(wrapper.find('Route').prop('location').pathname).toEqual('/login');
+        expect(wrapper.find('Route').prop('location').pathname).toEqual(
+          '/login',
+        );
       });
 
       wrapper

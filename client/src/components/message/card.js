@@ -5,14 +5,16 @@ import CardContent from '@material-ui/core/CardContent';
 
 const MessageCard = (props) => {
   const { item, onDelete } = props;
-  // TODO handle date properly
-  const { content, date } = item;
+  const { content, createdAt } = item;
+  // TODO refactor date
+  const createdAtTimestamp = parseInt(createdAt, 10);
+  const createdAtDate = createdAtTimestamp ? (new Date(createdAtTimestamp)).toLocaleString() : '';
 
   return (
     <Card>
       <CardHeader
         action={<DeleteForever onClick={() => onDelete(item)}>Delete</DeleteForever>}
-        subheader={date}
+        subheader={createdAtDate}
       />
       <CardContent>
         <Typography>
