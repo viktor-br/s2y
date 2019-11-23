@@ -3,9 +3,9 @@ const getMessages = async (root, args, { user, messageRepository }) => {
     return [];
   }
 
-  const { id: userID } = user;
+  const { id: userId } = user;
 
-  return messageRepository.findByUserID(userID);
+  return messageRepository.findByUserId(userId);
 };
 
 module.exports = getMessages;

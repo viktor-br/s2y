@@ -18,14 +18,14 @@ describe('createContext', () => {
 
   test('authenticateUser failed', async () => {
     const sessionId = '12345';
-    const userID = '67890';
+    const userId = '67890';
     const session = {
-      get: () => userID,
+      get: () => userId,
     };
     const defaultContext = {
       session,
     };
-    const user = { id: userID };
+    const user = { id: userId };
     const req = { cookies: { SID: sessionId } };
 
     const returnedCreateContextFunc = createContext(defaultContext);

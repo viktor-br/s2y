@@ -3,16 +3,16 @@ const { withFilter } = require('apollo-server');
 const messageCreated = {
   subscribe: withFilter(
     (_, __, { pubsub }) => pubsub.asyncIterator('messageCreated'),
-    ({ messageCreated: { userID } }, variables, { user: { id } }) =>
-      id && userID && id === userID,
+    ({ messageCreated: { userId } }, variables, { user: { id } }) =>
+      id && userId && id === userId,
   ),
 };
 
 const messageDeleted = {
   subscribe: withFilter(
     (_, __, { pubsub }) => pubsub.asyncIterator('messageDeleted'),
-    ({ messageDeleted: { userID } }, variables, { user: { id } }) =>
-      id && userID && id === userID,
+    ({ messageDeleted: { userId } }, variables, { user: { id } }) =>
+      id && userId && id === userId,
   ),
 };
 

@@ -2,7 +2,7 @@ const uuidv4 = require('uuid/v4');
 const Repository = require('./repository');
 
 class AccountRepository extends Repository {
-  async findByID(id) {
+  async findById(id) {
     const [rows] = await this.pool.query(
       'SELECT * FROM `account` WHERE `id` = ?',
       [id],

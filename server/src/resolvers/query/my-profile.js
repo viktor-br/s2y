@@ -5,7 +5,7 @@ const myProfile = async (root, args, { user, accountRepository }) => {
 
   const { id } = user;
 
-  const { picture: pictureUrl, name } = await accountRepository.findByID(id);
+  const { picture: pictureUrl, name } = await accountRepository.findById(id);
 
   return { id, name, pictureUrl };
 };

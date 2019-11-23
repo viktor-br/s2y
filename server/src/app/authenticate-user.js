@@ -3,13 +3,13 @@ const authenticateUser = async (sessionId, session) => {
     throw new Error('Authentication failed');
   }
 
-  const userID = await session.get(sessionId);
+  const userId = await session.get(sessionId);
 
-  if (!userID) {
+  if (!userId) {
     throw new Error('Authentication failed');
   }
 
-  return { id: userID };
+  return { id: userId };
 };
 
 module.exports = authenticateUser;

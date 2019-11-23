@@ -65,9 +65,9 @@ describe('createAuthHandler', () => {
       name,
       picture,
     };
-    const userID = '2345';
+    const userId = '2345';
     const newSessionId = '5555';
-    const createOrGetExistingMock = jest.fn(() => ({ id: userID }));
+    const createOrGetExistingMock = jest.fn(() => ({ id: userId }));
     const accountRepository = {
       createOrGetExisting: createOrGetExistingMock,
     };
@@ -123,7 +123,7 @@ describe('createAuthHandler', () => {
       expect(sessionRemoveMock).not.toHaveBeenCalledWith(sessionId);
     }
     const expirationDate = (getCurrentDate() / 1000) + 86400;
-    expect(sessionCreateForUserMock).toHaveBeenCalledWith(userID, expirationDate);
+    expect(sessionCreateForUserMock).toHaveBeenCalledWith(userId, expirationDate);
     expect(createOrGetExistingMock).toHaveBeenCalledWith({
       externalId,
       name,

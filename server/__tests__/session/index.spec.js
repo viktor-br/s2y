@@ -16,7 +16,7 @@ describe('session', () => {
 
   test('session set', async () => {
     const sessionId = '12345';
-    const userID = '55555';
+    const userId = '55555';
     const storageSetMock = jest.fn();
     const storageExpireAtMock = jest.fn();
 
@@ -28,9 +28,9 @@ describe('session', () => {
     };
     const session = new Session(storage);
     const expirationDate = (new Date(Date.now()) / 1000) + 86400;
-    const returnedSsessionId = await session.createForUser(userID, expirationDate);
+    const returnedSsessionId = await session.createForUser(userId, expirationDate);
 
-    expect(storageSetMock).toHaveBeenCalledWith(`session_${sessionId}`, userID);
+    expect(storageSetMock).toHaveBeenCalledWith(`session_${sessionId}`, userId);
     expect(storageExpireAtMock).toHaveBeenCalledWith(`session_${sessionId}`, expirationDate);
 
     expect(returnedSsessionId).toEqual(sessionId);
@@ -38,18 +38,18 @@ describe('session', () => {
 
   test('session get', async () => {
     const sessionId = '12345';
-    const userID = '55555';
-    const storageSetMock = jest.fn(() => userID);
+    const userId = '55555';
+    const storageSetMock = jest.fn(() => userId);
 
     const storage = {
       getAsync: storageSetMock,
     };
     const session = new Session(storage);
-    const returnedUserID = await session.get(sessionId);
+    const returnedUserId = await session.get(sessionId);
 
     expect(storageSetMock).toHaveBeenCalledWith(`session_${sessionId}`);
 
-    expect(returnedUserID).toBe(userID);
+    expect(returnedUserId).toBe(userId);
   });
 
   test('session del', () => {

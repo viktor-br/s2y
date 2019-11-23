@@ -69,7 +69,7 @@ describe('AccountRepository:findByAuthProviderAndExternalId', () => {
   });
 });
 
-describe('AccountRepository:findByID', () => {
+describe('AccountRepository:findById', () => {
   test('empty response', async () => {
     const id = '123456';
 
@@ -80,7 +80,7 @@ describe('AccountRepository:findByID', () => {
 
     const accountRepository = new AccountRepository(pool);
 
-    const returnedAccount = await accountRepository.findByID(id);
+    const returnedAccount = await accountRepository.findById(id);
 
     expect(queryMock).toHaveBeenCalledWith(
       'SELECT * FROM `account` WHERE `id` = ?',
@@ -100,7 +100,7 @@ describe('AccountRepository:findByID', () => {
 
     const accountRepository = new AccountRepository(pool);
 
-    const returnedAccount = await accountRepository.findByID(id);
+    const returnedAccount = await accountRepository.findById(id);
 
     expect(queryMock).toHaveBeenCalledWith(
       'SELECT * FROM `account` WHERE `id` = ?',
@@ -134,7 +134,7 @@ describe('AccountRepository:findByID', () => {
 
     const accountRepository = new AccountRepository(pool);
 
-    const returnedAccount = await accountRepository.findByID(id);
+    const returnedAccount = await accountRepository.findById(id);
 
     expect(queryMock).toHaveBeenCalledWith(
       'SELECT * FROM `account` WHERE `id` = ?',

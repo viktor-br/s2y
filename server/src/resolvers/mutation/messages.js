@@ -10,11 +10,11 @@ const createMessage = async (
     return null;
   }
 
-  const { id: userID } = user;
+  const { id: userId } = user;
 
   const message = {
     id: uuidv4(),
-    userID,
+    userId,
     createdAt: getCurrentDate(),
     content,
   };
@@ -36,19 +36,19 @@ const deleteMessage = async (
     return null;
   }
 
-  const { id: userID } = user;
+  const { id: userId } = user;
 
-  const message = await messageRepository.findByID(id);
+  const message = await messageRepository.findById(id);
 
   if (!message) {
     throw new UserInputError('Message does not exist');
   }
 
-  if (message.userID !== userID) {
+  if (message.userId !== userId) {
     throw new ForbiddenError('Access forbidden');
   }
 
-  await messageRepository.deleteByID(id);
+  await messageRepository.deleteById(id);
 
   pubsub.publish('messageDeleted', { messageDeleted: message });
 

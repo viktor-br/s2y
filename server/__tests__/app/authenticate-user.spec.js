@@ -4,14 +4,14 @@ describe('authenticateUser', () => {
   test('success', async () => {
     expect.assertions(1);
 
-    const userID = 'abc';
+    const userId = 'abc';
     const session = {
-      get: jest.fn(() => userID),
+      get: jest.fn(() => userId),
     };
 
     const user = await authenticateUser('123', session);
 
-    expect(user).toEqual({ id: userID });
+    expect(user).toEqual({ id: userId });
   });
 
   test('failed: sessionId empty', async () => {

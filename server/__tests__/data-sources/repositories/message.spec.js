@@ -5,7 +5,7 @@ jest.mock('uuid/v4');
 describe('AccountRepository', () => {
   test('create', async () => {
     const id = '12345';
-    const userID = '5555';
+    const userId = '5555';
     const content = 'message';
     const createdAt = new Date();
     const queryMock = jest.fn();
@@ -16,7 +16,7 @@ describe('AccountRepository', () => {
     await messageRepository.create(
       {
         id,
-        userID,
+        userId,
         content,
         createdAt,
       },
@@ -26,15 +26,15 @@ describe('AccountRepository', () => {
       'INSERT INTO `message` SET ?',
       {
         id,
-        user_id: userID,
+        user_id: userId,
         content,
         created_at: createdAt,
       },
     );
   });
 
-  test('findByUserID', async () => {
-    const userID = '5555';
+  test('findByUserId', async () => {
+    const userId = '5555';
     const id1 = 'id1';
     const content1 = 'message1';
     const createdAt1 = new Date();
@@ -46,13 +46,13 @@ describe('AccountRepository', () => {
         [
           {
             id: id1,
-            user_id: userID,
+            user_id: userId,
             content: content1,
             created_at: createdAt1,
           },
           {
             id: id2,
-            user_id: userID,
+            user_id: userId,
             content: content2,
             created_at: createdAt2,
           },
@@ -63,24 +63,24 @@ describe('AccountRepository', () => {
       query: queryMock,
     };
     const messageRepository = new MessageRepository(pool);
-    const messages = await messageRepository.findByUserID(userID);
+    const messages = await messageRepository.findByUserId(userId);
 
     expect(queryMock).toHaveBeenCalledWith(
       'SELECT * FROM `message` WHERE user_id = ? ORDER BY `created_at` ASC LIMIT 20',
-      [userID],
+      [userId],
     );
 
     expect(messages).toEqual(
       [
         {
           id: id1,
-          userID,
+          userId,
           content: content1,
           createdAt: createdAt1,
         },
         {
           id: id2,
-          userID,
+          userId,
           content: content2,
           createdAt: createdAt2,
         },
@@ -88,13 +88,13 @@ describe('AccountRepository', () => {
     );
   });
 
-  test('findByID', async () => {
-    const messageID = 'abc';
+  test('findById', async () => {
+    const messageId = 'abc';
     const queryMock = jest.fn(
         () => [
           [
             {
-              id: messageID,
+              id: messageId,
               user_id: 'def',
               content: 'content',
               created_at: '123456',
@@ -106,17 +106,17 @@ describe('AccountRepository', () => {
       query: queryMock,
     };
     const messageRepository = new MessageRepository(pool);
-    const message = await messageRepository.findByID(messageID);
+    const message = await messageRepository.findById(messageId);
 
     expect(queryMock).toHaveBeenCalledWith(
         'SELECT * FROM `message` WHERE id = ?',
-        [messageID],
+        [messageId],
     );
 
     expect(message).toEqual(
       {
-        id: messageID,
-        userID: 'def',
+        id: messageId,
+        userId: 'def',
         content: 'content',
         createdAt: '123456',
       },
@@ -124,17 +124,17 @@ describe('AccountRepository', () => {
   });
 
   test('delete', async () => {
-    const messageID = 'abc';
+    const messageId = 'abc';
     const queryMock = jest.fn();
     const pool = {
       query: queryMock,
     };
     const messageRepository = new MessageRepository(pool);
-    await messageRepository.deleteByID(messageID);
+    await messageRepository.deleteById(messageId);
 
     expect(queryMock).toHaveBeenCalledWith(
         'DELETE FROM `message` WHERE id = ?',
-        [messageID],
+        [messageId],
     );
   });
 });

@@ -1,10 +1,10 @@
 const Repository = require('./repository');
 
 class MessageRepository extends Repository {
-  async findByUserID(userID) {
+  async findByUserId(userId) {
     const [messages] = await this.pool.query(
       'SELECT * FROM `message` WHERE user_id = ? ORDER BY `created_at` ASC LIMIT 20',
-      [userID],
+      [userId],
     );
 
     return messages.map((message) => {
@@ -12,46 +12,46 @@ class MessageRepository extends Repository {
 
       return {
         id,
-        userID,
+        userId,
         content,
         createdAt,
       };
     });
   }
 
-  async create({ id, userID, content, createdAt }) {
+  async create({ id, userId, content, createdAt }) {
     await this.pool.query('INSERT INTO `message` SET ?', {
       id,
-      user_id: userID,
+      user_id: userId,
       content,
       created_at: createdAt,
     });
   }
 
-  async findByID(messageID) {
+  async findById(messageId) {
     const [[message]] = await this.pool.query(
       'SELECT * FROM `message` WHERE id = ?',
-      [messageID],
+      [messageId],
     );
 
     const {
       id,
       content,
       created_at: createdAt,
-      user_id: userID,
+      user_id: userId,
     } = message;
 
     return {
       id,
-      userID,
+      userId,
       content,
       createdAt,
     };
   }
 
-  async deleteByID(messageID) {
+  async deleteById(messageId) {
     return this.pool.query('DELETE FROM `message` WHERE id = ?', [
-      messageID,
+      messageId,
     ]);
   }
 }

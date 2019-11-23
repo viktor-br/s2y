@@ -8,20 +8,20 @@ describe('getMessages', () => {
   });
 
   test('success', async () => {
-    const userID = '12345';
+    const userId = '12345';
     const messages = [
       { id: 123 },
       { id: 555 },
     ];
-    const findByUserIDMock = jest.fn(() => messages);
+    const findByUserIdMock = jest.fn(() => messages);
     const messageRepository = {
-      findByUserID: findByUserIDMock,
+      findByUserId: findByUserIdMock,
     };
-    const context = { user: { id: userID }, messageRepository };
+    const context = { user: { id: userId }, messageRepository };
 
     const returnedMessages = await getMessages(null, {}, context);
 
-    expect(findByUserIDMock).toHaveBeenCalledWith(userID);
+    expect(findByUserIdMock).toHaveBeenCalledWith(userId);
     expect(returnedMessages).toEqual(messages);
   });
 });
