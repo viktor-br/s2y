@@ -1,4 +1,5 @@
 const uuidv4 = require('uuid/v4');
+const striptags = require('striptags');
 const { ForbiddenError, UserInputError } = require('apollo-server');
 const { Mutation: { createMessage, deleteMessage } } = require('../../../src/resolvers');
 
@@ -14,7 +15,7 @@ describe('createMessage', () => {
   test('success', async () => {
     const userId = '12345';
     const sessionId = '5555555';
-    const content = 'test';
+    const content = 'test<b>rest</b>';
     const pubsubPublishMock = jest.fn();
     const pubsub = {
       publish: pubsubPublishMock,
@@ -29,7 +30,7 @@ describe('createMessage', () => {
       id: sessionId,
       userId,
       createdAt: currentDate,
-      content,
+      content: striptags(content),
     };
     const context = {
       user: { id: userId },

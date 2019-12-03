@@ -1,4 +1,5 @@
 const uuidv4 = require('uuid/v4');
+const striptags = require('striptags');
 const { ForbiddenError, UserInputError } = require('apollo-server');
 
 const createMessage = async (
@@ -16,9 +17,9 @@ const createMessage = async (
     id: uuidv4(),
     userId,
     createdAt: getCurrentDate(),
-    content,
+    content: striptags(content),
   };
-  pubsub.publish('messageCreated', {
+  await pubsub.publish('messageCreated', {
     messageCreated: message,
   });
 
@@ -50,7 +51,7 @@ const deleteMessage = async (
 
   await messageRepository.deleteById(id);
 
-  pubsub.publish('messageDeleted', { messageDeleted: message });
+  await pubsub.publish('messageDeleted', { messageDeleted: message });
 
   return message;
 };
