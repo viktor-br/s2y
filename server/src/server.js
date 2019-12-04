@@ -1,6 +1,6 @@
 const { createLogger, format, transports } = require('winston');
 const { ApolloServer } = require('apollo-server-express');
-const { PubSub } = require('graphql-subscriptions');
+const { RedisPubSub } = require('graphql-redis-subscriptions');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const http = require('http');
@@ -23,7 +23,13 @@ const {
 } = require('./app');
 
 const getCurrentDate = () => new Date(Date.now());
-const pubsub = new PubSub();
+const pubsub = new RedisPubSub({
+  connection: {
+    host: config.get('subscription.pubsub.host'),
+    port: config.get('subscription.pubsub.port'),
+    retryStrategy: (times) => Math.min(times * 50, 2000),
+  },
+});
 
 const logger = createLogger({
   format: format.combine(

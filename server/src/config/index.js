@@ -42,6 +42,20 @@ const config = convict({
       },
     },
   },
+  subscription: {
+    pubsub: {
+      host: {
+        format: String,
+        env: 'S2Y_SUBSCRIPTION_PUB_SUB_HOST',
+        default: '',
+      },
+      port: {
+        format: String,
+        env: 'S2Y_SUBSCRIPTION_PUB_SUB_PORT',
+        default: '',
+      },
+    },
+  },
   google: {
     sign_in: {
       client_id: {

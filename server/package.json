@@ -16,6 +16,7 @@
     "express": "^4.16.4",
     "google-auth-library": "^4.2.1",
     "graphql": "^14.2.1",
+    "graphql-redis-subscriptions": "^2.1.1",
     "graphql-subscriptions": "^1.1.0",
     "lodash": ">=4.17.13",
     "lodash.template": ">=4.5.0",
