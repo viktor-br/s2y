@@ -19,8 +19,9 @@ const createMessage = async (
     createdAt: getCurrentDate(),
     content: striptags(content),
   };
+  // there is an issue here with serialisation, date is serialised to string by default
   await pubsub.publish('messageCreated', {
-    messageCreated: message,
+    messageCreated: { ...message, createdAt: message.createdAt.getTime() },
   });
 
   messageRepository.create(message);

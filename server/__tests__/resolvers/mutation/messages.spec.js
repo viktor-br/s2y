@@ -1,7 +1,9 @@
 const uuidv4 = require('uuid/v4');
 const striptags = require('striptags');
 const { ForbiddenError, UserInputError } = require('apollo-server');
-const { Mutation: { createMessage, deleteMessage } } = require('../../../src/resolvers');
+const {
+  Mutation: { createMessage, deleteMessage },
+} = require('../../../src/resolvers');
 
 jest.mock('uuid/v4');
 
@@ -41,7 +43,9 @@ describe('createMessage', () => {
     uuidv4.mockReturnValueOnce(sessionId);
     const returnedMessage = await createMessage(null, { content }, context);
 
-    expect(pubsubPublishMock).toHaveBeenCalledWith('messageCreated', { messageCreated: message });
+    expect(pubsubPublishMock).toHaveBeenCalledWith('messageCreated', {
+      messageCreated: { ...message, createdAt: message.createdAt.getTime() },
+    });
     expect(messageRepositoryCreateMock).toHaveBeenCalledWith(message);
 
     expect(returnedMessage).toEqual(message);
@@ -69,9 +73,7 @@ describe('deleteMessage', () => {
       content,
     };
 
-    const messageRepositoryFindByIdMock = jest.fn(
-        () => message
-    );
+    const messageRepositoryFindByIdMock = jest.fn(() => message);
     const messageRepositoryDeleteByIdMock = jest.fn();
     const messageRepository = {
       findById: messageRepositoryFindByIdMock,
@@ -89,7 +91,9 @@ describe('deleteMessage', () => {
 
     expect(messageRepositoryFindByIdMock).toHaveBeenCalledWith(id);
     expect(messageRepositoryDeleteByIdMock).toHaveBeenCalledWith(id);
-    expect(pubsubPublishMock).toHaveBeenCalledWith('messageDeleted', { messageDeleted: message });
+    expect(pubsubPublishMock).toHaveBeenCalledWith('messageDeleted', {
+      messageDeleted: message,
+    });
     expect(returnedMessage).toEqual(message);
   });
 
@@ -110,9 +114,7 @@ describe('deleteMessage', () => {
     const currentDate = new Date(Date.now());
     const getCurrentDate = () => currentDate;
 
-    const messageRepositoryFindByIdMock = jest.fn(
-        () => null
-    );
+    const messageRepositoryFindByIdMock = jest.fn(() => null);
     const messageRepositoryDeleteByIdMock = jest.fn();
     const messageRepository = {
       findById: messageRepositoryFindByIdMock,
@@ -126,7 +128,9 @@ describe('deleteMessage', () => {
       getCurrentDate,
     };
 
-    await expect(deleteMessage(null, {id}, context)).rejects.toThrow(UserInputError);
+    await expect(deleteMessage(null, { id }, context)).rejects.toThrow(
+      UserInputError,
+    );
 
     expect(messageRepositoryFindByIdMock).toHaveBeenCalledWith(id);
     expect(messageRepositoryDeleteByIdMock).not.toHaveBeenCalled();
@@ -153,9 +157,7 @@ describe('deleteMessage', () => {
       content,
     };
 
-    const messageRepositoryFindByIdMock = jest.fn(
-        () => message
-    );
+    const messageRepositoryFindByIdMock = jest.fn(() => message);
     const messageRepositoryDeleteByIdMock = jest.fn();
     const messageRepository = {
       findById: messageRepositoryFindByIdMock,
@@ -169,7 +171,9 @@ describe('deleteMessage', () => {
       getCurrentDate,
     };
 
-    await expect(deleteMessage(null, {id}, context)).rejects.toThrow(ForbiddenError);
+    await expect(deleteMessage(null, { id }, context)).rejects.toThrow(
+      ForbiddenError,
+    );
 
     expect(messageRepositoryFindByIdMock).toHaveBeenCalledWith(id);
     expect(messageRepositoryDeleteByIdMock).not.toHaveBeenCalled();

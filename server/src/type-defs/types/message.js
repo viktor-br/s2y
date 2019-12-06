@@ -4,7 +4,7 @@ const message = gql`
   type Message {
     id: String!
     content: String!
-    createdAt: String!
+    createdAt: DateTime!
   }
 `;
 
