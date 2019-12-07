@@ -20,6 +20,7 @@ const {
   createAuthHandler,
   createLogoutHandler,
   createSubscriptionOnConnectHandler,
+  createErrorFormatter,
 } = require('./app');
 
 const getCurrentDate = () => new Date(Date.now());
@@ -81,6 +82,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context,
+  formatError: createErrorFormatter(logger),
   subscriptions: {
     path: '/ws/',
     onConnect: createSubscriptionOnConnectHandler(contextData),

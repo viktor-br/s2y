@@ -4,6 +4,7 @@ const { createContext } = require('./context');
 const { createAuthHandler, createLogoutHandler } = require('./handlers');
 const { createSubscriptionOnConnectHandler } = require('./subscriptions');
 const authenticateUser = require('./authenticate-user');
+const { createErrorFormatter } = require('./error-formatter');
 
 module.exports = {
   createSessionStorage,
@@ -13,4 +14,5 @@ module.exports = {
   createLogoutHandler,
   createSubscriptionOnConnectHandler,
   authenticateUser,
+  createErrorFormatter,
 };

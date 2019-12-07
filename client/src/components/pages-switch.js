@@ -3,6 +3,7 @@ import React from 'react';
 import Home from './home';
 import Login from './login';
 import { MessageView } from './message';
+import { parseServerError, ERR_UNAUTHENTICATED } from '../error';
 
 const PagesSwitch = () => (
   <Switch>
@@ -17,7 +18,15 @@ const PagesSwitch = () => (
     <Route
       path="/messages"
       render={(props) => (
-        <MessageView {...props} onApiError={() => <Redirect to="/login" />} />
+        <MessageView
+          {...props}
+          onApiError={(err) => {
+            if (parseServerError(err) === ERR_UNAUTHENTICATED) {
+              return <Redirect to="/login" />;
+            }
+            return <div>API Error</div>;
+          }}
+        />
       )}
     />
   </Switch>

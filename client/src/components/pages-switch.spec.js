@@ -4,13 +4,17 @@ import { mount } from 'enzyme';
 import waitForExpect from 'wait-for-expect';
 import { MockedProvider } from '@apollo/react-testing';
 import { act } from 'react-dom/test-utils';
+import { parseServerError, ERR_UNAUTHENTICATED, ERR_INTERNAL } from '../error';
 import Login from './login';
 import PagesSwitch from './pages-switch';
+
 import {
   QUERY_GET_MESSAGES,
   SUBSCRIPTION_MESSAGE_CREATED,
   SUBSCRIPTION_MESSAGE_DELETED,
 } from '../gql';
+
+jest.mock('../error');
 
 describe('PagesSwitch', () => {
   test('open login page', async () => {
@@ -89,34 +93,34 @@ describe('PagesSwitch', () => {
     });
   });
 
-  test('open message page without authentication', async () => {
-    const mocks = [
-      {
-        request: {
-          query: QUERY_GET_MESSAGES,
-          variables: {},
+  test.each([[ERR_UNAUTHENTICATED, '/login'], [ERR_INTERNAL, '/messages']])(
+    'open message page without authentication',
+    async (errorCode, path) => {
+      parseServerError.mockReturnValue(errorCode);
+      const mocks = [
+        {
+          request: {
+            query: QUERY_GET_MESSAGES,
+            variables: {},
+          },
+          error: new Error('Something went wrong'),
         },
-        result: {
-          error: new Error('Authentication failed'),
-        },
-      },
-    ];
+      ];
 
-    await act(async () => {
-      const wrapper = mount(
-        <MockedProvider mocks={mocks} addTypename={false}>
-          <MemoryRouter initialEntries={['/messages']}>
-            <PagesSwitch />
-          </MemoryRouter>
-        </MockedProvider>,
-      );
-
-      await waitForExpect(() => {
-        wrapper.update();
-        expect(wrapper.find('Route').prop('location').pathname).toEqual(
-          '/login',
+      await act(async () => {
+        const wrapper = mount(
+          <MockedProvider mocks={mocks} addTypename={false}>
+            <MemoryRouter initialEntries={['/messages']}>
+              <PagesSwitch />
+            </MemoryRouter>
+          </MockedProvider>,
         );
+
+        await waitForExpect(() => {
+          wrapper.update();
+          expect(wrapper.find('Route').prop('location').pathname).toEqual(path);
+        });
       });
-    });
-  });
+    },
+  );
 });
