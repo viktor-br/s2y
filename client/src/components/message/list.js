@@ -1,7 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSubscription, useMutation } from '@apollo/react-hooks';
 import { Grid, makeStyles } from '@material-ui/core';
-import { SUBSCRIPTION_MESSAGE_CREATED, SUBSCRIPTION_MESSAGE_DELETED, MUTATION_DELETE_MESSAGE } from '../../gql';
+import {
+  SUBSCRIPTION_MESSAGE_CREATED,
+  SUBSCRIPTION_MESSAGE_DELETED,
+  MUTATION_DELETE_MESSAGE,
+} from '../../gql';
 import MessageCard from './card';
 
 const useStyles = makeStyles(() => ({

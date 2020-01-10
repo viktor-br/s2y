@@ -34,12 +34,7 @@ class MessageRepository extends Repository {
       [messageId],
     );
 
-    const {
-      id,
-      content,
-      created_at: createdAt,
-      user_id: userId,
-    } = message;
+    const { id, content, created_at: createdAt, user_id: userId } = message;
 
     return {
       id,
@@ -50,9 +45,7 @@ class MessageRepository extends Repository {
   }
 
   async deleteById(messageId) {
-    return this.pool.query('DELETE FROM `message` WHERE id = ?', [
-      messageId,
-    ]);
+    return this.pool.query('DELETE FROM `message` WHERE id = ?', [messageId]);
   }
 }
 

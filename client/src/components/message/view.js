@@ -34,7 +34,7 @@ const MessageView = (props) => {
     }
     return <p>ERROR</p>;
   }
-  const { getMessages: messages} = data;
+  const { getMessages: messages } = data;
 
   return (
     <Grid

@@ -38,16 +38,23 @@ describe('new message component', () => {
 
       expect(wrapper.find(TextField)).toHaveLength(1);
 
-      wrapper.find('textarea')
+      wrapper
+        .find('textarea')
         .at(0)
         .simulate('click');
-      wrapper.find('textarea')
+      wrapper
+        .find('textarea')
         .at(0)
         .simulate('change', { target: { value: message } });
       // wrapper.find('textarea#message').simulate('change', { target: { value: message } });
       await waitForExpect(() => {
         wrapper.update();
-        expect(wrapper.find('textarea').at(0).text()).toEqual(message);
+        expect(
+          wrapper
+            .find('textarea')
+            .at(0)
+            .text(),
+        ).toEqual(message);
       });
 
       const createMessageElements = wrapper.find(Fab);
@@ -55,7 +62,12 @@ describe('new message component', () => {
       await createMessageElements.at(0).simulate('click');
 
       await waitForExpect(() => {
-        expect(wrapper.find('textarea').at(0).text()).toEqual('');
+        expect(
+          wrapper
+            .find('textarea')
+            .at(0)
+            .text(),
+        ).toEqual('');
       });
     });
   });

@@ -16,17 +16,14 @@ class Login extends Component {
   }
 
   async onSignInSuccess(token) {
-    const response = await fetch(
-      '/auth/',
-      {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ token }),
+    const response = await fetch('/auth/', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
-    );
+      body: JSON.stringify({ token }),
+    });
     // TODO add proper handler
     // ).catch((err) => console.log(err));
 

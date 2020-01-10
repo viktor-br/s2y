@@ -2,7 +2,12 @@ module.exports = {
   verbose: true,
   testRegex: '__tests__/.*\\.spec\\.js$',
   coverageReporters: ['text'],
-  collectCoverageFrom: ['src/**/*.js', '!src/type-defs/**/*.js', '!src/server.js', '!src/resolvers/subscription/message.js'],
+  collectCoverageFrom: [
+    'src/**/*.js',
+    '!src/type-defs/**/*.js',
+    '!src/server.js',
+    '!src/resolvers/subscription/message.js',
+  ],
   coverageThreshold: {
     global: {
       branches: 100,

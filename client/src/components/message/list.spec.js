@@ -5,7 +5,11 @@ import waitForExpect from 'wait-for-expect';
 import { act } from 'react-dom/test-utils';
 import { DeleteForever } from '@material-ui/icons';
 import MessageList from './list';
-import { SUBSCRIPTION_MESSAGE_DELETED, SUBSCRIPTION_MESSAGE_CREATED, MUTATION_DELETE_MESSAGE } from '../../gql';
+import {
+  SUBSCRIPTION_MESSAGE_DELETED,
+  SUBSCRIPTION_MESSAGE_CREATED,
+  MUTATION_DELETE_MESSAGE,
+} from '../../gql';
 
 describe('list component', () => {
   test('empty initial message list', async () => {

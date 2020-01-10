@@ -35,7 +35,7 @@
     "test:coverage": "react-scripts test --coverage --watchAll=false",
     "eject": "react-scripts eject",
     "lint": "./node_modules/.bin/eslint .",
-    "prettier": "prettier --check src/**/*.js"
+    "prettier": "prettier --check 'src/**/*.js'"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -71,10 +71,10 @@
       "text"
     ],
     "collectCoverageFrom": [
-      "**/*.js",
-      "!**/src/api/**",
-      "!**/src/index.js**",
-      "!**/src/serviceWorker.js**"
+      "src/**/*.js",
+      "!src/api/**",
+      "!src/index.js**",
+      "!src/serviceWorker.js**"
     ],
     "coverageThreshold": {
       "global": {

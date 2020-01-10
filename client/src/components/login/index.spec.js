@@ -6,28 +6,31 @@ import Login from './index';
 describe('Login', () => {
   beforeEach(() => jest.clearAllMocks());
 
-  test.each([[204, true], [404, false]])('run onSignInSuccess', async (status, authenticated) => {
-    const token = '12345';
+  test.each([[204, true], [404, false]])(
+    'run onSignInSuccess',
+    async (status, authenticated) => {
+      const token = '12345';
 
-    jest.spyOn(global, 'fetch').mockImplementation(() => ({ status }));
-    const wrapper = mount(<Login />);
-    wrapper.instance().onSignInSuccess(token);
+      jest.spyOn(global, 'fetch').mockImplementation(() => ({ status }));
+      const wrapper = mount(<Login />);
+      wrapper.instance().onSignInSuccess(token);
 
-    expect(global.fetch).toHaveBeenCalledTimes(1);
+      expect(global.fetch).toHaveBeenCalledTimes(1);
 
-    expect(global.fetch).toHaveBeenCalledWith('/auth/', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ token }),
-    });
-    await waitForExpect(() => {
-      wrapper.update();
-      expect(wrapper.state('authenticated')).toBe(authenticated);
-    });
-  });
+      expect(global.fetch).toHaveBeenCalledWith('/auth/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token }),
+      });
+      await waitForExpect(() => {
+        wrapper.update();
+        expect(wrapper.state('authenticated')).toBe(authenticated);
+      });
+    },
+  );
 
   test('call onAuthenticated callback', async () => {
     const token = '12345';

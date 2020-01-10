@@ -45,7 +45,7 @@
     "test": "NODE_ENV=test ./node_modules/.bin/jest",
     "test:coverage": "NODE_ENV=test ./node_modules/.bin/jest --coverage",
     "lint": "./node_modules/.bin/eslint .",
-    "prettier": "prettier --check src/**/*.js"
+    "prettier": "prettier --check 'src/**/*.js'"
   },
   "author": "Viktor Brusylovets",
   "license": "MIT"
