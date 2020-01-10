@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: s2y-kv
+spec:
+  replicas: 1
+  selector:
+    app: s2y-kv
+  template:
+    metadata:
+      name: s2y-kv
+      labels:
+        app: s2y-kv
+    spec:
+      containers:
+        - name: redis
+          image: redis
+          ports:
+            - name: redis-port
+              containerPort: 6379
+          volumeMounts:
+            - mountPath: "/data"
+              name: kv-storage
+      volumes:
+        - name: kv-storage
+          persistentVolumeClaim:
+            claimName: s2y-kv-volume-claim

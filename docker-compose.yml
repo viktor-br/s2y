@@ -6,7 +6,7 @@ services:
     container_name: send2yourself-nginx
     tty: true
     volumes:
-      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+      - ./infrastructure/docker/dev/nginx/conf.d/:/etc/nginx/conf.d/
     ports:
       - "80:80"
     links:

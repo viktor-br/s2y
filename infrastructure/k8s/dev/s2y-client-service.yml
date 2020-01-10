@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: s2y-client-service
+spec:
+  selector:
+    app: s2y-client
+  ports:
+    - port: 80
+      targetPort: http-port
+      protocol: TCP
+  type: LoadBalancer

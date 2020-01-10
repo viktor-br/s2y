@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: s2y-server-deployment
+  labels:
+    app: s2y-server
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: s2y-server
+    spec:
+      containers:
+        - name: s2y-server
+          image: goon/s2y-server:v2
+          ports:
+            - name: http-port
+              containerPort: 4000
+          env:
+            - name: S2Y_DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: s2y-server-configmap
+                  key: db-host
+            - name: S2Y_DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: s2y-server-configmap
+                  key: db-port
+            - name: S2Y_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: s2y-server-secrets
+                  key: db-username
+            - name: S2Y_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: s2y-server-secrets
+                  key: db-password
+            - name: S2Y_DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: s2y-server-configmap
+                  key: db-name
+            - name: S2Y_SESSION_STORAGE_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: s2y-server-configmap
+                  key: session-storage-host
+            - name: S2Y_SESSION_STORAGE_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: s2y-server-configmap
+                  key: session-storage-port
+            - name: S2Y_SESSION_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: s2y-server-secrets
+                  key: session-secret
+            - name: S2Y_GOOGLE_SIGNIN_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: s2y-server-secrets
+                  key: google-signin-client-id
+            - name: S2Y_SUBSCRIPTION_PUB_SUB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: s2y-server-configmap
+                  key: subscription-pub-sub-host
+            - name: S2Y_SUBSCRIPTION_PUB_SUB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: s2y-server-configmap
+                  key: subscription-pub-sub-port
+  selector:
+    matchLabels:
+      app: s2y-server

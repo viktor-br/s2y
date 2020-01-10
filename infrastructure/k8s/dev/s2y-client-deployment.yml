@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: s2y-client-deployment
+  labels:
+    app: s2y-client
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: s2y-client
+    spec:
+      containers:
+        - name: s2y-client
+          image: goon/s2y-client:v2
+          ports:
+            - name: http-port
+              containerPort: 80
+          volumeMounts:
+            - name: s2y-client-config-volume
+              mountPath: /etc/nginx/conf.d
+      volumes:
+        - name: s2y-client-config-volume
+          configMap:
+            name: s2y-client-config-configmap
+            items:
+              - key: default.conf
+                path: default.conf
+  selector:
+    matchLabels:
+      app: s2y-client
